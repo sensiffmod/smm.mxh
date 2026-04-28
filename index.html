@@ -178,7 +178,6 @@
         <div id="login-form">
             <input type="text" placeholder="Tên đăng nhập hoặc Email">
             <input type="password" placeholder="Mật khẩu">
-            <p style="text-align: right; font-size: 11px; color: var(--primary); cursor: pointer;" onclick="alert('Vui lòng liên hệ Admin để đặt lại mật khẩu!')">Quên mật khẩu?</p>
             <button class="btn-buy" onclick="handleLogin()">ĐĂNG NHẬP NGAY</button>
         </div>
 
@@ -220,12 +219,8 @@
     <div class="menu-label">Nạp Tiền</div>
     <div class="sidebar-item" onclick="showPopup('qr-popup')"><i class="fas fa-qrcode"></i> Nạp tiền QR</div>
     <div class="sidebar-item" onclick="showPopup('gift-popup')"><i class="fas fa-gift"></i> Nhập Giftcode</div>
-    <div class="sidebar-item" style="opacity: 0.6; cursor: not-allowed;"><i class="fas fa-credit-card"></i> Nạp thẻ cào <span class="status-tag">Bảo trì</span></div>
 
     <div class="menu-label">Quản trị</div>
-    <div class="sidebar-item" style="opacity: 0.6; cursor: not-allowed;">
-        <i class="fas fa-chart-line"></i> Dòng tiền <span class="status-tag">Bảo trì</span>
-    </div>
     <div class="sidebar-item" onclick="showHistory()"><i class="fas fa-history"></i> Xem Lịch Sử Đơn</div>
     
     <div class="menu-label">Hỗ trợ</div>
@@ -241,7 +236,6 @@
 
 <div class="popup" id="gift-popup">
     <h3 style="color: var(--primary);">NHẬP GIFTCODE NGẪU NHIÊN</h3>
-    <p style="font-size: 11px; color: #888;">Ví dụ: abcd233u2i4y2idjd</p>
     <input type="text" id="gift-code-input" placeholder="Dán mã giftcode của bạn...">
     <button class="btn-buy" onclick="handleRedeemGiftcode()">XÁC NHẬN NHẬN TIỀN</button>
     <button class="btn-back" onclick="closePopups()">HỦY</button>
@@ -288,7 +282,7 @@
 
         <div class="section-title" style="color: #FF0000;"><i class="fab fa-youtube"></i> YOUTUBE SERVICES</div>
         <div class="grid">
-            <div class="card vip-card" style="border-color: #FF0000; color: #FF0000;" onclick="openService('Lên Tick Xanh YouTube', 1000000, 'Link kênh YouTube', 'youtube')">LÊN TICK XANH YOUTUBE</div>
+            <div class="card vip-card" style="border-color: #FF0000; color: #FF0000;" onclick="openService('TICK ĐÃ XÁC MINH YOUTUBE', 2000000, 'Link kênh YouTube', 'youtube')">TICK ĐÃ XÁC MINH YOUTUBE</div>
             <div class="card" onclick="openService('Tăng View Youtube', 10, 'Link video Youtube', 'youtube')">Tăng View</div>
             <div class="card" onclick="openService('Tăng Like Youtube', 1, 'Link video Youtube', 'youtube')">Tăng Like</div>
             <div class="card" onclick="openService('Tăng Sub Youtube', 1200, 'Link kênh Youtube', 'youtube')">Tăng Subscribe</div>
@@ -298,19 +292,6 @@
         <div class="grid">
             <div class="card" onclick="openService('Tăng Like Instagram', 5, 'Link bài viết Instagram', 'instagram')">Tăng Like</div>
             <div class="card" onclick="openService('Tăng Follow Instagram', 15, 'Link profile Instagram', 'instagram')">Tăng Follow</div>
-            <div class="card" onclick="openService('Tăng View Instagram', 2, 'Link video Instagram', 'instagram')">Tăng View</div>
-        </div>
-
-        <div class="section-title" style="color: #0088cc;"><i class="fab fa-telegram"></i> TELEGRAM SERVICES</div>
-        <div class="grid">
-            <div class="card" onclick="openService('Tăng Member Telegram', 25, 'Link Group/Channel', 'telegram')">Tăng Member</div>
-            <div class="card" onclick="openService('Tăng View Telegram', 1, 'Link bài viết Telegram', 'telegram')">Tăng View</div>
-        </div>
-
-        <div class="section-title" style="color: #EE4D2D;"><i class="fas fa-shopping-bag"></i> SHOPEE SERVICES</div>
-        <div class="grid">
-            <div class="card" onclick="openService('Tăng Follow Shopee', 45, 'Link shop Shopee', 'shopee')">Tăng Follow Shop</div>
-            <div class="card" onclick="openService('Tăng Like Sản Phẩm', 12, 'Link sản phẩm Shopee', 'shopee')">Like Sản Phẩm</div>
         </div>
 
         <div class="footer-copyright">© Bản Quyền thuộc về Huy SMM</div>
@@ -319,7 +300,6 @@
     <div id="detail-panel" class="panel">
         <h3 id="sv-name" style="margin: 0; color: var(--primary);">Tên dịch vụ</h3>
         <p style="font-size: 11px; color: #888; margin-bottom: 5px;">Giá: <span id="sv-price-display">0</span>đ / đơn vị</p>
-        <p id="limit-info" style="font-size: 11px; color: var(--primary); margin-bottom: 10px; font-weight: bold;"></p>
         
         <div id="server-selection">
             <label style="font-size: 12px; font-weight: bold;">CHỌN SERVER:</label>
@@ -343,7 +323,7 @@
 <script>
     particlesJS("particles-js", {"particles":{"number":{"value":50},"color":{"value":"#00ff00"},"shape":{"type":"circle"},"opacity":{"value":0.5},"size":{"value":2},"line_linked":{"enable":true,"distance":120,"color":"#00ff00","opacity":0.2,"width":1},"move":{"enable":true,"speed":1.5}}});
 
-    let basePrice = 0, currentPricePerUnit = 0, currentPlatform = '', userBalance = 0;
+    let basePrice = 0, currentPricePerUnit = 0, userBalance = 0;
     let orderHistory = [];
     let serverMultipliers = [0, 0.5, 1, 2]; 
 
@@ -359,62 +339,30 @@
         document.getElementById('overlay').style.display = 'block';
         document.getElementById('sys-announce').style.display = 'block';
         updateBalanceUI();
-        startFakeOrders();
     }
 
-    function startFakeOrders() {
-        const users = ["tu_ban_hang", "ngoc_smm", "trung_tiktok", "minh_hieu", "hoang_vjp", "thanh_truc", "quang_mkt", "anh_dao", "phuong_thao", "tuan_anh", "duc_thinh", "van_nam", "chi_pheo", "thi_no", "son_tung", "jack_97", "den_vau", "bin_z", "karik", "suboi"];
-        const svs = ["Tăng View Youtube", "Tăng Tim TikTok", "Like Youtube", "Sub Youtube", "Like Facebook", "Theo dõi FB", "Follow Instagram", "Member Telegram", "Tick Xanh YouTube"];
-        const notify = document.getElementById('fake-notify');
-
-        setInterval(() => {
-            let user = users[Math.floor(Math.random() * users.length)];
-            let sv = svs[Math.floor(Math.random() * svs.length)];
-            let num = (Math.floor(Math.random() * 50) + 1) * 100;
-            notify.innerHTML = `<i class="fas fa-shopping-cart" style="color:var(--primary)"></i> <b>@${user}</b> vừa mua <b>${num}</b> ${sv}`;
-            notify.style.display = 'block';
-            setTimeout(() => { notify.style.display = 'none'; }, 3000);
-        }, 5000);
-    }
-
-    function handleRedeemGiftcode() {
-        const codeInput = document.getElementById('gift-code-input').value.trim().toLowerCase();
-        if (!codeInput) return;
-        const randomRegex = /^(?=.*[a-z])(?=.*[0-9])[a-z0-9]{10,}$/;
-        if (randomRegex.test(codeInput)) {
-            const luckyAmount = Math.floor(Math.random() * (100000 - 1000 + 1)) + 1000;
-            userBalance += luckyAmount;
-            updateBalanceUI();
-            alert(`✅ Mã quà tặng hợp lệ!\nBạn đã nhận được: ${luckyAmount.toLocaleString()}đ`);
-            closePopups();
-        } else {
-            alert('❌ Mã Giftcode không đúng định dạng ngẫu nhiên hoặc quá ngắn!');
-        }
-    }
-
-    function openService(name, price, placeholder, platform, customMultipliers = null) {
+    function openService(name, price, placeholder, platform) {
         document.getElementById('home-view').style.display = 'none';
         document.getElementById('detail-panel').style.display = 'block';
         document.getElementById('sv-name').innerText = name;
         document.getElementById('target-link').placeholder = placeholder;
         basePrice = price;
-        currentPlatform = platform;
-        
-        // Nếu là dịch vụ tick xanh (số lượng luôn là 1)
-        if (name.includes("Tick Xanh")) {
-            document.getElementById('quantity').value = 1;
-            document.getElementById('qty-container').style.display = 'none';
-        } else {
-            document.getElementById('quantity').value = '';
-            document.getElementById('qty-container').style.display = 'block';
-        }
 
-        if(customMultipliers) {
-            serverMultipliers = customMultipliers;
+        // KIỂM TRA NẾU LÀ DỊCH VỤ TICK (ĐÃ XÁC MINH)
+        if (name.includes("Tick") || name.includes("XÁC MINH")) {
+            document.getElementById('server-selection').style.display = 'none'; // ẨN CHỌN SERVER
+            document.getElementById('qty-container').style.display = 'none';    // ẨN NHẬP SỐ LƯỢNG
+            document.getElementById('quantity').value = 1;
+            currentPricePerUnit = basePrice; // Giá giữ nguyên không cộng multiplier
         } else {
-            serverMultipliers = [0, 0.5, 1, 2];
+            document.getElementById('server-selection').style.display = 'block';
+            document.getElementById('qty-container').style.display = 'block';
+            document.getElementById('quantity').value = '';
+            setSv(document.getElementById('sv-btn-1'), 0);
         }
-        setSv(document.getElementById('sv-btn-1'), 0);
+        
+        document.getElementById('sv-price-display').innerText = currentPricePerUnit.toLocaleString();
+        updateTotal();
     }
 
     function setSv(el, index) {
@@ -435,25 +383,25 @@
         const qty = parseFloat(document.getElementById('quantity').value) || 0;
         const total = qty * currentPricePerUnit;
         if (qty <= 0) { alert('Vui lòng nhập số lượng!'); return; }
-        if (userBalance < total) { alert('Số dư không đủ! Vui lòng nạp thêm.'); return; }
+        if (userBalance < total) { alert('Số dư không đủ!'); return; }
         userBalance -= total;
         updateBalanceUI();
         orderHistory.push({ service: name, quantity: qty, price: total, status: 'Đang chạy' });
-        alert('✅ Đơn hàng đã được gửi thành công!');
+        alert('✅ Gửi đơn thành công!');
         closeService();
     }
 
     function showHistory() {
         closeSidebar();
         const content = document.getElementById('history-content');
-        content.innerHTML = orderHistory.length === 0 ? '<tr><td colspan="4" style="text-align:center">Chưa có đơn hàng nào</td></tr>' : 
+        content.innerHTML = orderHistory.length === 0 ? '<tr><td colspan="4" style="text-align:center">Chưa có đơn hàng</td></tr>' : 
         orderHistory.map(o => `<tr><td>${o.service}</td><td>${o.quantity}</td><td>${o.price.toLocaleString()}đ</td><td style="color:var(--primary)">${o.status}</td></tr>`).join('');
         showPopup('history-popup');
     }
 
     function closeService() { document.getElementById('detail-panel').style.display = 'none'; document.getElementById('home-view').style.display = 'block'; }
     function closeAnnounce() { document.getElementById('sys-announce').style.display = 'none'; document.getElementById('overlay').style.display = 'none'; }
-    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').style.display = 'block'; }
     function closeSidebar() { document.getElementById('sidebar').classList.remove('active'); document.getElementById('overlay').style.display = 'none'; }
     function showPopup(id) { closeSidebar(); document.getElementById(id).style.display = 'block'; document.getElementById('overlay').style.display = 'block'; }
     function closePopups() { document.querySelectorAll('.popup').forEach(p => p.style.display = 'none'); document.getElementById('overlay').style.display = 'none'; }

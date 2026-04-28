@@ -159,7 +159,7 @@
 <div class="header" id="main-header">
     <div onclick="toggleSidebar()"><i class="fas fa-bars" style="font-size: 24px; cursor: pointer;"></i></div>
     <div class="user-header-info"><i class="fas fa-user-circle"></i> <span>Nguyễn Quốc Huy</span></div>
-    <div class="balance-box"><i class="fas fa-wallet"></i> 0 đ</div>
+    <div class="balance-box"><i class="fas fa-wallet"></i> <span id="header-balance">0</span> đ</div>
 </div>
 
 <div class="sidebar" id="sidebar">
@@ -167,7 +167,7 @@
     <div class="sidebar-user-section">
         <i class="fas fa-user-circle"></i>
         <div class="sidebar-username">Nguyễn Quốc Huy</div>
-        <div style="font-size: 12px; color: #888; margin-top: 5px;">Số dư: 0 đ</div>
+        <div style="font-size: 12px; color: #888; margin-top: 5px;">Số dư: <span id="sidebar-balance">0</span> đ</div>
     </div>
 
     <div class="menu-label">Nạp Tiền</div>
@@ -253,7 +253,7 @@
 
     <div id="detail-panel" class="panel">
         <h3 id="sv-name" style="margin: 0; color: var(--primary);">Tên dịch vụ</h3>
-        <p style="font-size: 11px; color: #888; margin-bottom: 10px;">Giá: <span id="sv-price">0</span>đ / đơn vị</p>
+        <p style="font-size: 11px; color: #888; margin-bottom: 10px;">Giá: <span id="sv-price-display">0</span>đ / đơn vị</p>
         
         <div id="server-selection">
             <label style="font-size: 12px; font-weight: bold;">CHỌN SERVER:</label>
@@ -283,8 +283,16 @@
     particlesJS("particles-js", {"particles":{"number":{"value":50},"color":{"value":"#00ff00"},"shape":{"type":"circle"},"opacity":{"value":0.5},"size":{"value":2},"line_linked":{"enable":true,"distance":120,"color":"#00ff00","opacity":0.2,"width":1},"move":{"enable":true,"speed":1.5}}});
 
     let basePrice = 0;
+    let currentPricePerUnit = 0; // Giá thực tế của đơn vị (số)
     let currentServiceType = '';
     let serverMultipliers = [0, 0, 0, 0];
+    let userBalance = 0; // Biến lưu số dư người dùng
+
+    // Khởi tạo hiển thị số dư
+    function updateBalanceUI() {
+        document.getElementById('header-balance').innerText = userBalance.toLocaleString();
+        document.getElementById('sidebar-balance').innerText = userBalance.toLocaleString();
+    }
 
     function switchAuth(mode) {
         const loginForm = document.getElementById('login-form');
@@ -307,6 +315,7 @@
         document.getElementById('main-content').style.display = 'block';
         document.getElementById('overlay').style.display = 'block';
         document.getElementById('sys-announce').style.display = 'block';
+        updateBalanceUI();
     }
 
     function closeAnnounce() {
@@ -343,17 +352,17 @@
         document.getElementById('detail-panel').style.display = 'block';
         document.getElementById('sv-name').innerText = name;
         document.getElementById('target-link').placeholder = placeholder;
+        document.getElementById('target-link').value = '';
         
         basePrice = price;
         currentServiceType = type;
 
-        // Xử lý giao diện cho Tick Xanh
         if(type === 'tick_xanh') {
             document.getElementById('server-selection').style.display = 'none';
             document.getElementById('qty-container').style.display = 'none';
             document.getElementById('quantity').value = 1;
-            document.getElementById('sv-price').innerText = price.toLocaleString();
-            serverMultipliers = [0, 0, 0, 0];
+            currentPricePerUnit = price;
+            document.getElementById('sv-price-display').innerText = price.toLocaleString();
         } else {
             document.getElementById('server-selection').style.display = 'block';
             document.getElementById('qty-container').style.display = 'block';
@@ -375,8 +384,9 @@
         document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('active'));
         el.classList.add('active');
         
-        let newPrice = basePrice + serverMultipliers[index];
-        document.getElementById('sv-price').innerText = newPrice.toFixed(2);
+        currentPricePerUnit = basePrice + serverMultipliers[index];
+        // Hiển thị giá đơn vị chuẩn xác
+        document.getElementById('sv-price-display').innerText = currentPricePerUnit.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2});
         updateTotal();
     }
 
@@ -387,17 +397,31 @@
     }
 
     function updateTotal() {
-        const qty = document.getElementById('quantity').value || 0;
-        const priceText = document.getElementById('sv-price').innerText.replace(/,/g, '');
-        const price = parseFloat(priceText);
-        document.getElementById('total-price').innerText = (qty * price).toLocaleString() + ' đ';
+        const qty = parseFloat(document.getElementById('quantity').value) || 0;
+        const total = qty * currentPricePerUnit;
+        document.getElementById('total-price').innerText = total.toLocaleString() + ' đ';
     }
 
     function confirmOrder() {
-        if(!document.getElementById('target-link').value || !document.getElementById('quantity').value) {
-            alert('Vui lòng điền đủ thông tin!'); return;
+        const link = document.getElementById('target-link').value;
+        const qty = parseFloat(document.getElementById('quantity').value) || 0;
+        const total = qty * currentPricePerUnit;
+
+        if(!link || qty <= 0) {
+            alert('Vui lòng điền đầy đủ thông tin và số lượng hợp lệ!'); 
+            return;
         }
-        alert('Đã gửi đơn hàng thành công!');
+
+        // KIỂM TRA SỐ DƯ TÀI KHOẢN
+        if (userBalance < total) {
+            alert('Số dư không đủ! Vui lòng nạp thêm tiền để thực hiện giao dịch.\nThiếu: ' + (total - userBalance).toLocaleString() + ' đ');
+            return;
+        }
+
+        // Nếu đủ tiền (Logic giả lập trừ tiền)
+        userBalance -= total;
+        updateBalanceUI();
+        alert('Đã gửi đơn hàng thành công!\nTổng thanh toán: ' + total.toLocaleString() + ' đ');
         closeService();
     }
 </script>

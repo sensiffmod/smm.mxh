@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary: #00ff66; /* Màu xanh sáng hơn */
+            --primary: #00ff66;
             --fb: #1877F2;
             --tg: #0088cc;
             --sp: #ff4d00;
@@ -19,13 +19,12 @@
         body, html { 
             margin: 0; padding: 0; width: 100%; height: 100%; 
             background-color: var(--bg); color: #ffffff; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow-x: hidden;
+            font-family: 'Segoe UI', sans-serif; overflow-x: hidden;
         }
 
         #particles-js { position: fixed; width: 100%; height: 100%; z-index: 1; top: 0; left: 0; }
 
-        /* Header tối ưu */
+        /* Header */
         .header { 
             position: fixed; top: 0; width: 100%; height: 60px; 
             background: rgba(20, 20, 20, 0.95); backdrop-filter: blur(10px);
@@ -34,158 +33,150 @@
             padding: 0 15px; box-sizing: border-box;
         }
 
-        /* Form Đăng ký/Đăng nhập chuẩn để Google nhận diện */
+        /* Sidebar Menu */
+        .sidebar {
+            position: fixed; top: 0; left: -280px; width: 260px; height: 100%;
+            background: #0a0a0a; border-right: 2px solid var(--primary);
+            z-index: 300; transition: 0.4s; padding: 20px 0; box-sizing: border-box;
+        }
+        .sidebar.active { left: 0; }
+        .sidebar-header { padding: 0 20px 20px; border-bottom: 1px solid #333; color: var(--primary); font-weight: bold; font-size: 1.2rem; }
+        
+        .sidebar-item {
+            padding: 15px 20px; border-bottom: 1px solid #111;
+            display: flex; align-items: center; gap: 12px; cursor: pointer;
+        }
+        .sidebar-item:active { background: #1a1a1a; }
+
+        /* Popups */
+        .overlay {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.8); z-index: 250; display: none;
+        }
+        .popup {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 90%; max-width: 320px; background: var(--card);
+            border: 2px solid var(--primary); border-radius: 20px;
+            padding: 20px; z-index: 400; display: none; text-align: center;
+        }
+
+        /* Auth */
         .auth-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg); z-index: 1000; display: flex; 
-            align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;
+            align-items: center; justify-content: center; padding: 20px;
         }
-
         .auth-box {
             width: 100%; max-width: 350px; background: var(--card);
-            border: 1px solid var(--primary); border-radius: 20px;
-            padding: 25px; box-shadow: 0 0 20px rgba(0, 255, 102, 0.2);
+            border: 1px solid var(--primary); border-radius: 20px; padding: 25px;
         }
 
-        .auth-box h2 { color: var(--primary); text-align: center; margin-bottom: 20px; font-size: 1.5rem; }
-
-        input {
-            width: 100%; padding: 12px; margin-bottom: 15px;
-            background: #000; border: 1px solid #333; color: #fff;
-            border-radius: 10px; box-sizing: border-box; outline: none;
-            font-size: 16px; /* Tránh iOS tự zoom khi click */
-        }
-
-        input:focus { border-color: var(--primary); }
-
-        .btn-main {
-            background: var(--primary); color: #000; border: none;
-            padding: 14px; width: 100%; border-radius: 10px;
-            font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 16px;
-        }
-
-        .auth-footer { text-align: center; margin-top: 15px; font-size: 14px; }
-        .auth-footer span { color: var(--primary); cursor: pointer; font-weight: bold; }
-
-        /* Giao diện chính */
-        .container { 
-            position: relative; z-index: 2; padding: 75px 12px 30px; 
-            max-width: 450px; margin: 0 auto; 
-        }
-
-        .section-title {
-            font-size: 0.95rem; margin: 25px 0 12px; font-weight: 800;
-            display: flex; align-items: center; gap: 8px;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-
+        /* Content */
+        .container { position: relative; z-index: 2; padding: 75px 12px 30px; max-width: 450px; margin: 0 auto; }
+        .section-title { font-size: 0.95rem; margin: 25px 0 12px; font-weight: 800; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
         .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .product-card { background: var(--card); border: 1px solid rgba(255,255,255,0.1); padding: 15px 5px; border-radius: 12px; text-align: center; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+        .vip-card { grid-column: span 2; border: 1px solid #ffd700; color: #ffd700; }
 
-        .product-card {
-            background: var(--card); border: 1px solid rgba(255,255,255,0.1);
-            padding: 15px 5px; border-radius: 12px; text-align: center;
-            font-size: 0.85rem; font-weight: 600; transition: 0.2s;
-        }
-
-        .product-card:active { transform: scale(0.95); background: #222; }
-
-        .vip-card { 
-            grid-column: span 2; border: 1px solid #ffd700; 
-            background: linear-gradient(90deg, rgba(255,215,0,0.1), transparent);
-            color: #ffd700; 
-        }
-
-        /* Panel chi tiết dịch vụ */
-        .panel {
-            display: none; background: var(--card); border-radius: 20px;
-            border: 1px solid var(--primary); padding: 20px; margin-top: 10px;
-        }
-
-        .server-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; }
-        .server-item { 
-            background: #111; border: 1px solid #333; padding: 10px; 
-            border-radius: 8px; text-align: center; font-size: 0.8rem;
-        }
-        .server-item.active { border-color: inherit; background: rgba(255,255,255,0.1); }
-
+        input { width: 100%; padding: 12px; margin-bottom: 15px; background: #000; border: 1px solid #333; color: #fff; border-radius: 10px; box-sizing: border-box; }
+        .btn-main { background: var(--primary); color: #000; border: none; padding: 14px; width: 100%; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        
+        .panel { display: none; background: var(--card); border-radius: 20px; border: 1px solid var(--primary); padding: 20px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div id="particles-js"></div>
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">MENU HỆ THỐNG</div>
+    <div class="sidebar-item" onclick="showPopup('qr-popup')"><i class="fas fa-qrcode" style="color: var(--primary);"></i> Nạp Tiền QR</div>
+    <div class="sidebar-item" onclick="showPopup('gift-popup')"><i class="fas fa-gift" style="color: #ffd700;"></i> Nhập Giftcode</div>
+    <div class="sidebar-item" onclick="window.open('https://zalo.me/0397208110', '_blank')"><i class="fab fa-whatsapp" style="color: #0084ff;"></i> Liên Hệ Admin</div>
+    <div class="sidebar-item" onclick="location.reload()" style="color: #ff4444; margin-top: 20px;"><i class="fas fa-sign-out-alt"></i> Đăng xuất</div>
+</div>
+
+<div class="popup" id="qr-popup">
+    <h3 style="color: var(--primary);">NẠP TIỀN QUA QR</h3>
+    <img src="https://api.vietqr.io/image/970422-0397208110-v6S9k9m.jpg?accountName=NGUYEN%20QUOC%20HUY" style="width: 100%; border-radius: 10px; margin-bottom: 10px; border: 1px solid #333;">
+    <div style="text-align: left; background: rgba(0,0,0,0.5); padding: 12px; border-radius: 10px; font-size: 14px;">
+        <p style="margin: 5px 0;">Chủ TK: <b style="color: var(--primary);">NGUYEN QUOC HUY</b></p>
+        <p style="margin: 5px 0;">Mức nạp: <b style="color: #ffd700;">Tối thiểu 5,000đ</b></p>
+    </div>
+    <button class="btn-main" style="margin-top: 15px;" onclick="closeAll()">ĐÓNG</button>
+</div>
+
+<div class="popup" id="gift-popup">
+    <h3 style="color: #ffd700;">GIFTCODE</h3>
+    <input type="text" placeholder="Nhập mã code...">
+    <button class="btn-main" onclick="alert('Mã không hợp lệ!')">NHẬN</button>
+    <button class="btn-main" style="background: #333; color: #fff; margin-top: 10px;" onclick="closeAll()">ĐÓNG</button>
+</div>
 
 <div id="auth-screen" class="auth-container">
-    <div class="auth-box" id="login-box">
-        <h2>ĐĂNG NHẬP</h2>
-        <form id="login-form" onsubmit="event.preventDefault(); handleAuth('login');">
-            <input type="text" name="username" id="l-user" placeholder="Tên tài khoản" required autocomplete="username">
-            <input type="password" name="password" id="l-pass" placeholder="Mật khẩu" required autocomplete="current-password">
+    <div class="auth-box">
+        <h2 style="color: var(--primary); text-align: center;">ĐĂNG NHẬP</h2>
+        <form onsubmit="event.preventDefault(); handleAuth();">
+            <input type="text" name="username" placeholder="Tên tài khoản" required autocomplete="username">
+            <input type="password" name="password" placeholder="Mật khẩu" required autocomplete="current-password">
             <button type="submit" class="btn-main">VÀO HỆ THỐNG</button>
         </form>
-        <div class="auth-footer">
-            Chưa có tài khoản? <span onclick="switchAuth('register')">Đăng ký ngay</span><br><br>
-            <small style="color: #666;" onclick="alert('Vui lòng liên hệ Admin qua Zalo để lấy lại mật khẩu!')">Quên mật khẩu?</small>
-        </div>
-    </div>
-
-    <div class="auth-box" id="register-box" style="display: none;">
-        <h2>ĐĂNG KÝ</h2>
-        <form id="register-form" onsubmit="event.preventDefault(); handleAuth('register');">
-            <input type="text" name="username" id="r-user" placeholder="Tên tài khoản mới" required autocomplete="username">
-            <input type="password" name="password" id="r-pass" placeholder="Mật khẩu" required autocomplete="new-password">
-            <input type="password" id="r-pass-confirm" placeholder="Xác nhận mật khẩu" required autocomplete="new-password">
-            <button type="submit" class="btn-main">TẠO TÀI KHOẢN</button>
-        </form>
-        <div class="auth-footer">
-            Đã có tài khoản? <span onclick="switchAuth('login')">Đăng nhập</span>
-        </div>
     </div>
 </div>
 
 <div class="header" id="main-header">
-    <div style="color: var(--primary); font-weight: bold;"><i class="fas fa-user-circle"></i> <span id="user-display">User</span></div>
-    <div class="balance-area" style="color: var(--primary);"><i class="fas fa-wallet"></i> <span id="money">0</span>đ</div>
+    <div onclick="toggleSidebar()"><i class="fas fa-bars" style="font-size: 24px; color: var(--primary);"></i></div>
+    <div style="font-weight: bold; color: var(--primary);"><i class="fas fa-wallet"></i> <span id="money">0</span>đ</div>
 </div>
 
 <div class="container" id="main-content" style="display: none;">
-    <h1 style="text-align:center; color: var(--primary); font-size: 1.3rem; margin-bottom: 20px;">SMM VIỆT NAM SYSTEM</h1>
+    <h1 style="text-align:center; color: var(--primary); font-size: 1.3rem;">SMM VIỆT NAM SYSTEM</h1>
 
     <div class="section-title" style="color: var(--primary);"><i class="fab fa-tiktok"></i> TikTok Services</div>
     <div class="product-grid">
-        <div class="product-card vip-card" onclick="openSv('Tick Xanh TikTok', 'tiktok')">LÊN TICK XANH TIKTOK</div>
-        <div class="product-card" onclick="openSv('Tăng Tim', 'tiktok')">Tăng Tim</div>
-        <div class="product-card" onclick="openSv('Tăng Follow', 'tiktok')">Tăng Follow</div>
-        <div class="product-card" onclick="openSv('Tăng View', 'tiktok')">Tăng View</div>
-        <div class="product-card" onclick="openSv('Tăng Share', 'tiktok')">Tăng Share</div>
+        <div class="product-card vip-card" onclick="openSv('Tick Xanh TikTok')">LÊN TICK XANH TIKTOK</div>
+        <div class="product-card" onclick="openSv('Tăng Tim')">Tăng Tim</div>
+        <div class="product-card" onclick="openSv('Tăng Follow')">Tăng Follow</div>
+        <div class="product-card" onclick="openSv('Tăng View')">Tăng View</div>
     </div>
 
     <div class="section-title" style="color: var(--fb);"><i class="fab fa-facebook"></i> Facebook Services</div>
     <div class="product-grid">
-        <div class="product-card vip-card" style="border-color: var(--fb); color: var(--fb);" onclick="openSv('Tick Xanh Facebook', 'facebook')">LÊN TICK XANH FACEBOOK</div>
-        <div class="product-card" onclick="openSv('Like Bài Viết', 'facebook')">Like Bài Viết</div>
-        <div class="product-card" onclick="openSv('Theo Dõi', 'facebook')">Theo Dõi</div>
-        <div class="product-card" onclick="openSv('Tăng Share', 'facebook')">Tăng Share</div>
+        <div class="product-card vip-card" style="border-color: var(--fb); color: var(--fb);" onclick="openSv('Tick Xanh Facebook')">LÊN TICK XANH FACEBOOK</div>
+        <div class="product-card" onclick="openSv('Like Bài Viết')">Like Bài Viết</div>
+        <div class="product-card" onclick="openSv('Theo Dõi')">Theo Dõi</div>
+    </div>
+
+    <div class="section-title" style="color: var(--ig);"><i class="fab fa-instagram"></i> Instagram Services</div>
+    <div class="product-grid">
+        <div class="product-card" onclick="openSv('Like Instagram')">Tăng Like</div>
+        <div class="product-card" onclick="openSv('Follow Instagram')">Tăng Follow</div>
+        <div class="product-card" onclick="openSv('View Instagram')">Tăng View</div>
     </div>
 
     <div class="section-title" style="color: var(--tg);"><i class="fab fa-telegram"></i> Telegram Services</div>
     <div class="product-grid">
-        <div class="product-card" onclick="openSv('Tăng Member', 'telegram')">Tăng Member</div>
-        <div class="product-card" onclick="openSv('Tăng View', 'telegram')">Tăng View</div>
+        <div class="product-card" onclick="openSv('Member Telegram')">Tăng Member</div>
+        <div class="product-card" onclick="openSv('View Telegram')">Tăng View</div>
+    </div>
+
+    <div class="section-title" style="color: var(--sp);"><i class="fas fa-shopping-bag"></i> Shopee Services</div>
+    <div class="product-grid">
+        <div class="product-card" onclick="openSv('Follow Shopee')">Tăng Follow</div>
+        <div class="product-card" onclick="openSv('Like Sản Phẩm')">Like Sản Phẩm</div>
     </div>
 
     <div id="service-detail" class="panel">
-        <h3 id="sv-name" style="margin-top: 0;">Tên dịch vụ</h3>
-        <div class="server-grid" id="sv-server-box">
-            <div class="server-item active" onclick="selectServer(this)">S1-Giá rẻ</div>
-            <div class="server-item" onclick="selectServer(this)">S2-Việt VIP</div>
+        <h3 id="sv-name">Dịch vụ</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px;">
+            <div style="background: #111; border: 1px solid var(--primary); padding: 10px; border-radius: 8px; text-align: center; font-size: 0.8rem;">S1-Giá rẻ</div>
+            <div style="background: #111; border: 1px solid #333; padding: 10px; border-radius: 8px; text-align: center; font-size: 0.8rem;">S2-VIP</div>
         </div>
-        <input type="text" placeholder="Nhập Link hoặc ID bài viết...">
-        <input type="number" id="amt" placeholder="Số lượng (Min: 100)" oninput="updateTotal()">
-        <div style="display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 15px;">
-            <span>Tổng thanh toán:</span>
-            <span style="color: var(--primary);" id="total-price">0đ</span>
-        </div>
-        <button class="btn-main" onclick="alert('Đang xử lý đơn hàng...')">XÁC NHẬN MUA</button>
+        <input type="text" placeholder="Nhập Link/ID...">
+        <input type="number" id="soluong" placeholder="Số lượng..." oninput="calc()">
+        <p>Tổng: <span id="total" style="color: var(--primary); font-weight: bold;">0đ</span></p>
+        <button class="btn-main" onclick="alert('Đã nhận đơn!')">MUA NGAY</button>
         <button class="btn-main" style="background: #333; color: #fff; margin-top: 10px;" onclick="goHome()">QUAY LẠI</button>
     </div>
 </div>
@@ -193,57 +184,13 @@
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script>
     particlesJS("particles-js", {"particles":{"number":{"value":40},"color":{"value":"#00ff66"},"size":{"value":2},"move":{"speed":1.5}}});
-
-    function switchAuth(type) {
-        document.getElementById('login-box').style.display = type === 'login' ? 'block' : 'none';
-        document.getElementById('register-box').style.display = type === 'register' ? 'block' : 'none';
-    }
-
-    function handleAuth(mode) {
-        const user = mode === 'login' ? document.getElementById('l-user').value : document.getElementById('r-user').value;
-        const pass = mode === 'login' ? document.getElementById('l-pass').value : document.getElementById('r-pass').value;
-
-        if (mode === 'register') {
-            const confirm = document.getElementById('r-pass-confirm').value;
-            if (pass !== confirm) return alert("Mật khẩu xác nhận không khớp!");
-            alert("Đăng ký thành công! Google sẽ hỏi lưu mật khẩu.");
-        }
-
-        // Ẩn màn hình auth, hiện giao diện chính
-        document.getElementById('auth-screen').style.display = 'none';
-        document.getElementById('main-header').style.display = 'flex';
-        document.getElementById('main-content').style.display = 'block';
-        document.getElementById('user-display').innerText = user;
-    }
-
-    function openSv(name, type) {
-        document.querySelectorAll('.section-title, .product-grid').forEach(el => el.style.display = 'none');
-        const detail = document.getElementById('service-detail');
-        detail.style.display = 'block';
-        document.getElementById('sv-name').innerText = name;
-        
-        let color = "var(--primary)";
-        if(type === 'facebook') color = "var(--fb)";
-        if(type === 'telegram') color = "var(--tg)";
-        detail.style.borderColor = color;
-        document.getElementById('sv-name').style.color = color;
-    }
-
-    function goHome() {
-        document.getElementById('service-detail').style.display = 'none';
-        document.querySelectorAll('.section-title, .product-grid').forEach(el => el.style.display = 'grid');
-        document.querySelectorAll('.section-title').forEach(el => el.style.display = 'flex');
-    }
-
-    function selectServer(el) {
-        document.querySelectorAll('.server-item').forEach(i => i.classList.remove('active'));
-        el.classList.add('active');
-    }
-
-    function updateTotal() {
-        const q = document.getElementById('amt').value || 0;
-        document.getElementById('total-price').innerText = (q * 10).toLocaleString() + "đ";
-    }
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); document.getElementById('overlay').style.display = document.getElementById('sidebar').classList.contains('active') ? 'block' : 'none'; }
+    function showPopup(id) { closeAll(); document.getElementById(id).style.display = 'block'; document.getElementById('overlay').style.display = 'block'; }
+    function closeAll() { document.getElementById('sidebar').classList.remove('active'); document.querySelectorAll('.popup').forEach(p => p.style.display = 'none'); document.getElementById('overlay').style.display = 'none'; }
+    function handleAuth() { document.getElementById('auth-screen').style.display = 'none'; document.getElementById('main-header').style.display = 'flex'; document.getElementById('main-content').style.display = 'block'; }
+    function openSv(name) { document.querySelectorAll('.section-title, .product-grid').forEach(e => e.style.display = 'none'); document.getElementById('service-detail').style.display = 'block'; document.getElementById('sv-name').innerText = name; }
+    function goHome() { document.getElementById('service-detail').style.display = 'none'; document.querySelectorAll('.section-title, .product-grid').forEach(e => e.style.display = (e.classList.contains('section-title') ? 'flex' : 'grid')); }
+    function calc() { let q = document.getElementById('soluong').value || 0; document.getElementById('total').innerText = (q * 10).toLocaleString() + 'đ'; }
 </script>
 </body>
 </html>

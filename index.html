@@ -72,6 +72,13 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
+        /* Bảng lịch sử đơn hàng */
+        .history-table {
+            width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px;
+        }
+        .history-table th { background: #222; color: var(--primary); padding: 8px; text-align: left; }
+        .history-table td { padding: 8px; border-bottom: 1px solid #222; color: #ccc; }
+
         /* Auth Screen */
         #auth-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -148,9 +155,10 @@
         
         .popup {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 90%; max-width: 320px; background: var(--card);
+            width: 90%; max-width: 380px; background: var(--card);
             border: 1px solid var(--primary); border-radius: 15px; padding: 20px;
             z-index: 400; display: none; text-align: center;
+            max-height: 80vh; overflow-y: auto;
         }
 
         .footer-copyright {
@@ -187,7 +195,7 @@
             <input type="text" placeholder="Tên người dùng">
             <input type="email" placeholder="Địa chỉ Email">
             <input type="password" placeholder="Mật khẩu mới">
-            <button class="btn-buy" onclick="alert('Đăng ký thành công! Hãy đăng nhập.')">TẠO TÀI KHOẢN</button>
+            <button class="btn-buy" onclick="userBalance += 1500; updateBalanceUI(); alert('Đăng ký thành công! Bạn được tặng 1,500đ để trải nghiệm. Hãy đăng nhập.')">TẠO TÀI KHOẢN</button>
         </div>
     </div>
 </div>
@@ -198,7 +206,7 @@
     <div style="text-align: left; font-size: 13px; line-height: 1.6; color: #ddd; margin-bottom: 20px;">
         🚀 Chào mừng Bạn đến với <b>SMM VIỆT NAM!</b><br>
         💳 Nạp Bank/Thẻ cào tự động sau 30 giây.<br>
-        🎁 Khuyến mãi nạp lần đầu nhận thêm <b>10%</b>.<br>
+        🎁 Khuyến mãi nạp lần đầu nhận thêm <b>25%</b>.<br>
         📞 Zalo hỗ trợ: 0397208110
     </div>
     <button class="btn-buy" style="margin: 0;" onclick="closeAnnounce()">ĐÃ HIỂU</button>
@@ -224,7 +232,10 @@
     <div class="sidebar-item" style="opacity: 0.6; cursor: not-allowed;"><i class="fas fa-credit-card"></i> Nạp thẻ cào <span class="status-tag">Bảo trì</span></div>
 
     <div class="menu-label">Quản trị</div>
-    <div class="sidebar-item" onclick="alert('Đang tải dữ liệu...')"><i class="fas fa-history"></i> Xem Lịch Sử Đơn</div>
+    <div class="sidebar-item" style="opacity: 0.6; cursor: not-allowed;">
+        <i class="fas fa-chart-line"></i> Dòng tiền <span class="status-tag">Bảo trì</span>
+    </div>
+    <div class="sidebar-item" onclick="showHistory()"><i class="fas fa-history"></i> Xem Lịch Sử Đơn</div>
     
     <div class="menu-label">Hỗ trợ</div>
     <div class="sidebar-item" onclick="window.open('https://zalo.me/0397208110')"><i class="fab fa-whatsapp"></i> Liên Hệ Admin</div>
@@ -242,6 +253,25 @@
     <input type="text" id="gift-code-input" placeholder="Nhập mã của bạn...">
     <button class="btn-buy" onclick="handleRedeemGiftcode()">XÁC NHẬN</button>
     <button class="btn-back" onclick="closePopups()">HỦY</button>
+</div>
+
+<div class="popup" id="history-popup">
+    <h3 style="color: var(--primary);">LỊCH SỬ ĐƠN HÀNG</h3>
+    <div style="overflow-x: auto;">
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>Dịch vụ</th>
+                    <th>Số lượng</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái</th>
+                </tr>
+            </thead>
+            <tbody id="history-content">
+                </tbody>
+        </table>
+    </div>
+    <button class="btn-back" onclick="closePopups()" style="margin-top: 15px;">ĐÓNG</button>
 </div>
 
 <div class="container" id="main-content">
@@ -323,7 +353,7 @@
     particlesJS("particles-js", {"particles":{"number":{"value":50},"color":{"value":"#00ff00"},"shape":{"type":"circle"},"opacity":{"value":0.5},"size":{"value":2},"line_linked":{"enable":true,"distance":120,"color":"#00ff00","opacity":0.2,"width":1},"move":{"enable":true,"speed":1.5}}});
 
     let basePrice = 0, currentPricePerUnit = 0, currentPlatform = '', currentServiceType = '', userBalance = 0;
-    // Sửa giá: Server ít ngày rẻ hơn 0.3đ và 0.4đ
+    let orderHistory = []; // Mảng lưu lịch sử đơn
     let serverMultipliers = [0, -0.3, -0.4, 0.5]; 
 
     const LIMITS = {'follow': {min: 10, max: 2000}, 'tim': {min: 20, max: 5000}, 'like': {min: 20, max: 5000}, 'view': {min: 100, max: 100000}, 'other': {min: 10, max: 1000}};
@@ -340,10 +370,10 @@
         document.getElementById('overlay').style.display = 'block';
         document.getElementById('sys-announce').style.display = 'block';
         updateBalanceUI();
-        startFakeOrders(); // Chạy thông báo ảo
+        startFakeOrders();
     }
 
-    // Logic người mua ảo (100 người ngẫu nhiên, trừ tên Huy)
+    // Logic người mua ảo: 6 giây (6000ms) mới xuất hiện 1 tên @...
     function startFakeOrders() {
         const users = ["tu_ban_hang", "ngoc_smm", "trung_tiktok", "minh_hieu", "hoang_vjp", "thanh_truc", "quang_mkt", "anh_dao", "phuong_thao", "tuan_anh", "duc_thinh", "van_nam", "chi_pheo", "thi_no", "son_tung", "jack_97", "den_vau", "bin_z", "karik", "suboi"];
         const svs = ["Tăng Follow TikTok", "Tăng Tim TikTok", "View TikTok", "Like Facebook", "Theo dõi FB", "Member Telegram"];
@@ -354,12 +384,48 @@
             let sv = svs[Math.floor(Math.random() * svs.length)];
             let num = (Math.floor(Math.random() * 50) + 1) * 100;
 
-            if(user.toLowerCase().includes("huy")) return; // Loại bỏ tên Huy
+            if(user.toLowerCase().includes("huy")) return; 
 
-            notify.innerHTML = `<i class="fas fa-shopping-cart" style="color:var(--primary)"></i> <b>${user}</b> vừa mua <b>${num}</b> ${sv}`;
+            // Thêm @ vào trước tên
+            notify.innerHTML = `<i class="fas fa-shopping-cart" style="color:var(--primary)"></i> <b>@${user}</b> vừa mua <b>${num}</b> ${sv}`;
             notify.style.display = 'block';
             setTimeout(() => { notify.style.display = 'none'; }, 4000);
-        }, 7000);
+        }, 6000); // Đổi thành 6 giây
+    }
+
+    function confirmOrder() {
+        const name = document.getElementById('sv-name').innerText;
+        const qty = parseFloat(document.getElementById('quantity').value) || 0;
+        const total = qty * currentPricePerUnit;
+
+        if (userBalance < total) { alert('Số dư không đủ!'); return; }
+
+        userBalance -= total;
+        updateBalanceUI();
+        
+        // Lưu vào lịch sử
+        orderHistory.push({ service: name, quantity: qty, price: total, status: 'Đang chạy' });
+        
+        alert('Gửi đơn thành công! Hệ thống đang xử lý.');
+        closeService();
+    }
+
+    function showHistory() {
+        closeSidebar();
+        const content = document.getElementById('history-content');
+        if(orderHistory.length === 0) {
+            content.innerHTML = '<tr><td colspan="4" style="text-align:center">Chưa có đơn hàng nào!</td></tr>';
+        } else {
+            content.innerHTML = orderHistory.map(order => `
+                <tr>
+                    <td>${order.service}</td>
+                    <td>${order.quantity}</td>
+                    <td>${order.price.toLocaleString()}đ</td>
+                    <td style="color:var(--primary)">${order.status}</td>
+                </tr>
+            `).join('');
+        }
+        showPopup('history-popup');
     }
 
     function openService(name, price, placeholder, platform) {

@@ -270,22 +270,12 @@
     <div id="home-view">
         <div class="system-title">SMM VIỆT NAM SYSTEM</div>
 
-        <div class="section-title" style="color: #FF0000;"><i class="fab fa-youtube"></i> YOUTUBE SERVICES</div>
-        <div class="grid">
-            <div class="card" onclick="openService('Tăng View Youtube', 10, 'Link video Youtube', 'youtube', [0, 10, 20, 40])">Tăng View</div>
-            <div class="card" onclick="openService('Tăng Like Youtube', 1, 'Link video Youtube', 'youtube', [0, 1, 2, 4])">Tăng Like</div>
-            <div class="card" onclick="openService('Tăng Sub Youtube', 1200, 'Link kênh Youtube', 'youtube', [0, 500, 1000, 1800])">Tăng Subscribe</div>
-        </div>
-
         <div class="section-title" style="color: var(--primary);"><i class="fab fa-tiktok"></i> TIKTOK SERVICES</div>
         <div class="grid">
             <div class="card vip-card" onclick="openService('Lên Tick Xanh TikTok', 1500000, 'Nhập ID TikTok', 'tiktok')">LÊN TICK XANH TIKTOK</div>
             <div class="card" onclick="openService('Tăng Tim TikTok', 0.8, 'Link video TikTok', 'tiktok')">Tăng Tim</div>
             <div class="card" onclick="openService('Tăng Follow TikTok', 10, 'ID TikTok', 'tiktok')">Tăng Follow</div>
             <div class="card" onclick="openService('Tăng View TikTok', 0.5, 'Link video TikTok', 'tiktok')">Tăng View</div>
-            <div class="card" onclick="openService('Tăng Share TikTok', 1, 'Link video TikTok', 'tiktok')">Tăng Share</div>
-            <div class="card" onclick="openService('Đăng Lại TikTok', 0.9, 'Link video TikTok', 'tiktok')">Đăng Lại</div>
-            <div class="card" onclick="openService('Lưu Video TikTok', 2, 'Link video TikTok', 'tiktok')">Tăng Lưu</div>
         </div>
 
         <div class="section-title" style="color: #1877F2;"><i class="fab fa-facebook"></i> FACEBOOK SERVICES</div>
@@ -294,8 +284,14 @@
             <div class="card" onclick="openService('Like Bài Viết FB', 3, 'Link bài viết Facebook', 'facebook')">Like Bài Viết</div>
             <div class="card" onclick="openService('Theo Dõi FB', 6, 'Link trang cá nhân Facebook', 'facebook')">Theo Dõi</div>
             <div class="card" onclick="openService('Tăng Share FB', 5, 'Link bài viết Facebook', 'facebook')">Tăng Share</div>
-            <div class="card" onclick="openService('Cảm Xúc FB', 4, 'Link bài viết Facebook', 'facebook')">Cảm Xúc</div>
-            <div class="card" onclick="openService('View Video FB', 2, 'Link video Facebook', 'facebook')">View Video</div>
+        </div>
+
+        <div class="section-title" style="color: #FF0000;"><i class="fab fa-youtube"></i> YOUTUBE SERVICES</div>
+        <div class="grid">
+            <div class="card vip-card" style="border-color: #FF0000; color: #FF0000;" onclick="openService('Lên Tick Xanh YouTube', 1000000, 'Link kênh YouTube', 'youtube')">LÊN TICK XANH YOUTUBE</div>
+            <div class="card" onclick="openService('Tăng View Youtube', 10, 'Link video Youtube', 'youtube')">Tăng View</div>
+            <div class="card" onclick="openService('Tăng Like Youtube', 1, 'Link video Youtube', 'youtube')">Tăng Like</div>
+            <div class="card" onclick="openService('Tăng Sub Youtube', 1200, 'Link kênh Youtube', 'youtube')">Tăng Subscribe</div>
         </div>
 
         <div class="section-title" style="color: #E1306C;"><i class="fab fa-instagram"></i> INSTAGRAM SERVICES</div>
@@ -307,14 +303,14 @@
 
         <div class="section-title" style="color: #0088cc;"><i class="fab fa-telegram"></i> TELEGRAM SERVICES</div>
         <div class="grid">
-            <div class="card" onclick="openService('Tăng Member Telegram', 20, 'Link Group/Channel', 'telegram')">Tăng Member</div>
+            <div class="card" onclick="openService('Tăng Member Telegram', 25, 'Link Group/Channel', 'telegram')">Tăng Member</div>
             <div class="card" onclick="openService('Tăng View Telegram', 1, 'Link bài viết Telegram', 'telegram')">Tăng View</div>
         </div>
 
         <div class="section-title" style="color: #EE4D2D;"><i class="fas fa-shopping-bag"></i> SHOPEE SERVICES</div>
         <div class="grid">
-            <div class="card" onclick="openService('Tăng Follow Shopee', 50, 'Link shop Shopee', 'shopee')">Tăng Follow Shop</div>
-            <div class="card" onclick="openService('Tăng Like Shopee', 10, 'Link sản phẩm Shopee', 'shopee')">Like Sản Phẩm</div>
+            <div class="card" onclick="openService('Tăng Follow Shopee', 45, 'Link shop Shopee', 'shopee')">Tăng Follow Shop</div>
+            <div class="card" onclick="openService('Tăng Like Sản Phẩm', 12, 'Link sản phẩm Shopee', 'shopee')">Like Sản Phẩm</div>
         </div>
 
         <div class="footer-copyright">© Bản Quyền thuộc về Huy SMM</div>
@@ -368,7 +364,7 @@
 
     function startFakeOrders() {
         const users = ["tu_ban_hang", "ngoc_smm", "trung_tiktok", "minh_hieu", "hoang_vjp", "thanh_truc", "quang_mkt", "anh_dao", "phuong_thao", "tuan_anh", "duc_thinh", "van_nam", "chi_pheo", "thi_no", "son_tung", "jack_97", "den_vau", "bin_z", "karik", "suboi"];
-        const svs = ["Tăng View Youtube", "Tăng Tim TikTok", "Like Youtube", "Sub Youtube", "Like Facebook", "Theo dõi FB", "Follow Instagram", "Member Telegram"];
+        const svs = ["Tăng View Youtube", "Tăng Tim TikTok", "Like Youtube", "Sub Youtube", "Like Facebook", "Theo dõi FB", "Follow Instagram", "Member Telegram", "Tick Xanh YouTube"];
         const notify = document.getElementById('fake-notify');
 
         setInterval(() => {
@@ -403,6 +399,16 @@
         document.getElementById('target-link').placeholder = placeholder;
         basePrice = price;
         currentPlatform = platform;
+        
+        // Nếu là dịch vụ tick xanh (số lượng luôn là 1)
+        if (name.includes("Tick Xanh")) {
+            document.getElementById('quantity').value = 1;
+            document.getElementById('qty-container').style.display = 'none';
+        } else {
+            document.getElementById('quantity').value = '';
+            document.getElementById('qty-container').style.display = 'block';
+        }
+
         if(customMultipliers) {
             serverMultipliers = customMultipliers;
         } else {

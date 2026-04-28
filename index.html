@@ -298,6 +298,25 @@
             <div class="card" onclick="openService('View Video FB', 2, 'Link video Facebook', 'facebook')">View Video</div>
         </div>
 
+        <div class="section-title" style="color: #E1306C;"><i class="fab fa-instagram"></i> INSTAGRAM SERVICES</div>
+        <div class="grid">
+            <div class="card" onclick="openService('Tăng Like Instagram', 5, 'Link bài viết Instagram', 'instagram')">Tăng Like</div>
+            <div class="card" onclick="openService('Tăng Follow Instagram', 15, 'Link profile Instagram', 'instagram')">Tăng Follow</div>
+            <div class="card" onclick="openService('Tăng View Instagram', 2, 'Link video Instagram', 'instagram')">Tăng View</div>
+        </div>
+
+        <div class="section-title" style="color: #0088cc;"><i class="fab fa-telegram"></i> TELEGRAM SERVICES</div>
+        <div class="grid">
+            <div class="card" onclick="openService('Tăng Member Telegram', 20, 'Link Group/Channel', 'telegram')">Tăng Member</div>
+            <div class="card" onclick="openService('Tăng View Telegram', 1, 'Link bài viết Telegram', 'telegram')">Tăng View</div>
+        </div>
+
+        <div class="section-title" style="color: #EE4D2D;"><i class="fas fa-shopping-bag"></i> SHOPEE SERVICES</div>
+        <div class="grid">
+            <div class="card" onclick="openService('Tăng Follow Shopee', 50, 'Link shop Shopee', 'shopee')">Tăng Follow Shop</div>
+            <div class="card" onclick="openService('Tăng Like Shopee', 10, 'Link sản phẩm Shopee', 'shopee')">Like Sản Phẩm</div>
+        </div>
+
         <div class="footer-copyright">© Bản Quyền thuộc về Huy SMM</div>
     </div>
 
@@ -349,7 +368,7 @@
 
     function startFakeOrders() {
         const users = ["tu_ban_hang", "ngoc_smm", "trung_tiktok", "minh_hieu", "hoang_vjp", "thanh_truc", "quang_mkt", "anh_dao", "phuong_thao", "tuan_anh", "duc_thinh", "van_nam", "chi_pheo", "thi_no", "son_tung", "jack_97", "den_vau", "bin_z", "karik", "suboi"];
-        const svs = ["Tăng View Youtube", "Tăng Tim TikTok", "Like Youtube", "Sub Youtube", "Like Facebook", "Theo dõi FB"];
+        const svs = ["Tăng View Youtube", "Tăng Tim TikTok", "Like Youtube", "Sub Youtube", "Like Facebook", "Theo dõi FB", "Follow Instagram", "Member Telegram"];
         const notify = document.getElementById('fake-notify');
 
         setInterval(() => {
@@ -362,16 +381,11 @@
         }, 5000);
     }
 
-    // LOGIC GIFTCODE NGẪU NHIÊN THEO YÊU CẦU
     function handleRedeemGiftcode() {
         const codeInput = document.getElementById('gift-code-input').value.trim().toLowerCase();
         if (!codeInput) return;
-        
-        // Điều kiện: Mã dài trên 10 ký tự, gồm cả chữ và số (định dạng ngẫu nhiên)
         const randomRegex = /^(?=.*[a-z])(?=.*[0-9])[a-z0-9]{10,}$/;
-
         if (randomRegex.test(codeInput)) {
-            // Nhận tiền ngẫu nhiên từ 1,000đ đến 100,000đ
             const luckyAmount = Math.floor(Math.random() * (100000 - 1000 + 1)) + 1000;
             userBalance += luckyAmount;
             updateBalanceUI();

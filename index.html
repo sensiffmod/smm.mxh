@@ -23,52 +23,51 @@
 
         #particles-js { position: fixed; width: 100%; height: 100%; z-index: 1; top: 0; left: 0; pointer-events: none; }
 
-        /* Hiệu ứng ánh sáng chạy qua Card */
+        /* Hiệu ứng ánh sáng chạy qua Card mỗi 2 giây */
         .card {
             position: relative;
             background: #1a1a1a; border: 1px solid var(--border); border-radius: 8px;
             padding: 15px 5px; text-align: center; font-size: 0.85rem; font-weight: 500;
             cursor: pointer; transition: 0.2s; overflow: hidden;
         }
-        
+
         .card::before {
             content: '';
             position: absolute;
-            top: 0; left: -100%;
+            top: 0; left: -150%;
             width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(0, 255, 0, 0.1), transparent);
+            background: linear-gradient(to right, transparent, rgba(0, 255, 0, 0.2), transparent);
             transform: skewX(-25deg);
-            transition: none;
-            animation: lightSweep 4s infinite;
+            animation: sweepEffect 2s infinite;
         }
 
-        @keyframes lightSweep {
-            0% { left: -100%; }
-            20% { left: 150%; }
+        @keyframes sweepEffect {
+            0% { left: -150%; }
+            50% { left: 150%; }
             100% { left: 150%; }
         }
 
         .card:active { background: #222; border-color: var(--primary); }
         .vip-card { grid-column: span 2; border: 1px solid #ffd700; color: #ffd700; }
-        .vip-card::before { background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.2), transparent); }
+        .vip-card::before { background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.3), transparent); }
 
-        /* Thông báo mua ảo */
-        #fake-notification {
+        /* Thông báo người mua ảo */
+        #fake-notify {
             position: fixed;
-            top: 65px; right: 10px;
-            background: rgba(20, 20, 20, 0.9);
+            top: 65px;
+            right: 15px;
+            background: rgba(20, 20, 20, 0.95);
             border-left: 3px solid var(--primary);
-            padding: 8px 12px;
-            border-radius: 4px;
-            font-size: 11px;
-            z-index: 1000;
+            padding: 10px 15px;
+            border-radius: 5px;
+            z-index: 99;
             display: none;
-            animation: slideInRight 0.5s ease-out;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            max-width: 180px;
+            animation: slideIn 0.5s ease-out;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            max-width: 220px;
         }
 
-        @keyframes slideInRight {
+        @keyframes slideIn {
             from { transform: translateX(100%); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
         }
@@ -165,7 +164,7 @@
 <div id="particles-js"></div>
 <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
-<div id="fake-notification"></div>
+<div id="fake-notify"></div>
 
 <div id="auth-screen">
     <div class="auth-container">
@@ -180,6 +179,7 @@
         <div id="login-form">
             <input type="text" placeholder="Tên đăng nhập hoặc Email">
             <input type="password" placeholder="Mật khẩu">
+            <p style="text-align: right; font-size: 11px; color: var(--primary); cursor: pointer;" onclick="alert('Vui lòng liên hệ Admin để đặt lại mật khẩu!')">Quên mật khẩu?</p>
             <button class="btn-buy" onclick="handleLogin()">ĐĂNG NHẬP NGAY</button>
         </div>
 
@@ -187,7 +187,7 @@
             <input type="text" placeholder="Tên người dùng">
             <input type="email" placeholder="Địa chỉ Email">
             <input type="password" placeholder="Mật khẩu mới">
-            <button class="btn-buy" onclick="alert('Đăng ký thành công!')">TẠO TÀI KHOẢN</button>
+            <button class="btn-buy" onclick="alert('Đăng ký thành công! Hãy đăng nhập.')">TẠO TÀI KHOẢN</button>
         </div>
     </div>
 </div>
@@ -221,7 +221,11 @@
     <div class="menu-label">Nạp Tiền</div>
     <div class="sidebar-item" onclick="showPopup('qr-popup')"><i class="fas fa-qrcode"></i> Nạp tiền QR</div>
     <div class="sidebar-item" onclick="showPopup('gift-popup')"><i class="fas fa-gift"></i> Nhập Giftcode</div>
+    <div class="sidebar-item" style="opacity: 0.6; cursor: not-allowed;"><i class="fas fa-credit-card"></i> Nạp thẻ cào <span class="status-tag">Bảo trì</span></div>
 
+    <div class="menu-label">Quản trị</div>
+    <div class="sidebar-item" onclick="alert('Đang tải dữ liệu...')"><i class="fas fa-history"></i> Xem Lịch Sử Đơn</div>
+    
     <div class="menu-label">Hỗ trợ</div>
     <div class="sidebar-item" onclick="window.open('https://zalo.me/0397208110')"><i class="fab fa-whatsapp"></i> Liên Hệ Admin</div>
     <div class="sidebar-item" onclick="location.reload()" style="color: #ff4444; margin-top: 10px;"><i class="fas fa-sign-out-alt"></i> Đăng xuất</div>
@@ -252,13 +256,40 @@
             <div class="card" onclick="openService('Tăng View TikTok', 0.5, 'Link video TikTok', 'tiktok')">Tăng View</div>
             <div class="card" onclick="openService('Tăng Share TikTok', 1, 'Link video TikTok', 'tiktok')">Tăng Share</div>
             <div class="card" onclick="openService('Đăng Lại TikTok', 0.9, 'Link video TikTok', 'tiktok')">Đăng Lại</div>
+            <div class="card" onclick="openService('Lưu Video TikTok', 2, 'Link video TikTok', 'tiktok')">Tăng Lưu</div>
         </div>
 
         <div class="section-title" style="color: #1877F2;"><i class="fab fa-facebook"></i> FACEBOOK SERVICES</div>
         <div class="grid">
-            <div class="card vip-card" style="border-color: #1877F2; color: #1877F2;" onclick="openService('Lên Tick Xanh Facebook', 1500000, 'Link cá nhân FB', 'facebook')">LÊN TICK XANH FACEBOOK</div>
+            <div class="card vip-card" style="border-color: #1877F2; color: #1877F2;" onclick="openService('Lên Tick Xanh Facebook', 1500000, 'Link trang cá nhân Facebook', 'facebook')">LÊN TICK XANH FACEBOOK</div>
             <div class="card" onclick="openService('Like Bài Viết FB', 3, 'Link bài viết Facebook', 'facebook')">Like Bài Viết</div>
-            <div class="card" onclick="openService('Theo Dõi FB', 6, 'Link cá nhân Facebook', 'facebook')">Theo Dõi</div>
+            <div class="card" onclick="openService('Theo Dõi FB', 6, 'Link trang cá nhân Facebook', 'facebook')">Theo Dõi</div>
+            <div class="card" onclick="openService('Tăng Share FB', 5, 'Link bài viết Facebook', 'facebook')">Tăng Share</div>
+            <div class="card" onclick="openService('Cảm Xúc FB', 4, 'Link bài viết Facebook', 'facebook')">Cảm Xúc</div>
+            <div class="card" onclick="openService('View Video FB', 2, 'Link video Facebook', 'facebook')">View Video</div>
+        </div>
+
+        <div class="section-title" style="color: #E1306C;"><i class="fab fa-instagram"></i> INSTAGRAM SERVICES</div>
+        <div class="grid">
+            <div class="card" onclick="openService('Like Instagram', 3, 'Link bài viết Instagram', 'instagram')">Tăng Like</div>
+            <div class="card" onclick="openService('Follow Instagram', 7, 'Link trang cá nhân Instagram', 'instagram')">Tăng Follow</div>
+            <div class="card" onclick="openService('View Instagram', 2, 'Link video/reel Instagram', 'instagram')">Tăng View</div>
+        </div>
+
+        <div class="section-title" style="color: #0088cc;"><i class="fab fa-telegram"></i> TELEGRAM SERVICES</div>
+        <div class="grid">
+            <div class="card" onclick="openService('Tăng Member Telegram', 8, 'Link nhóm/kênh Telegram', 'telegram')">Tăng Member</div>
+            <div class="card" onclick="openService('Tăng View Telegram', 1, 'Link bài viết Telegram', 'telegram')">Tăng View</div>
+            <div class="card" onclick="openService('Tăng Vote Telegram', 4, 'Link bài bình chọn', 'telegram')">Tăng Vote</div>
+            <div class="card" onclick="openService('Tăng Reaction Telegram', 2, 'Link bài viết Telegram', 'telegram')">Tăng Reaction</div>
+        </div>
+
+        <div class="section-title" style="color: #ff4d00;"><i class="fas fa-shopping-bag"></i> SHOPEE SERVICES</div>
+        <div class="grid">
+            <div class="card" onclick="openService('Tăng Follow Shopee', 10, 'Link shop Shopee', 'shopee')">Tăng Follow</div>
+            <div class="card" onclick="openService('Like Sản Phẩm Shopee', 5, 'Link sản phẩm Shopee', 'shopee')">Like Sản Phẩm</div>
+            <div class="card" onclick="openService('View Sản Phẩm Shopee', 3, 'Link sản phẩm Shopee', 'shopee')">Tăng View</div>
+            <div class="card" onclick="openService('Đánh Giá Shopee', 1000, 'Link sản phẩm Shopee', 'shopee')">Đánh Giá 5*</div>
         </div>
 
         <div class="footer-copyright">© Bản Quyền thuộc về Huy SMM</div>
@@ -267,6 +298,7 @@
     <div id="detail-panel" class="panel">
         <h3 id="sv-name" style="margin: 0; color: var(--primary);">Tên dịch vụ</h3>
         <p style="font-size: 11px; color: #888; margin-bottom: 5px;">Giá: <span id="sv-price-display">0</span>đ / đơn vị</p>
+        <p id="limit-info" style="font-size: 11px; color: var(--primary); margin-bottom: 10px; font-weight: bold;"></p>
         
         <div id="server-selection">
             <label style="font-size: 12px; font-weight: bold;">CHỌN SERVER:</label>
@@ -279,13 +311,8 @@
         </div>
 
         <input type="text" id="target-link" placeholder="Nhập Link...">
-        <div id="qty-container">
-            <input type="number" id="quantity" placeholder="Nhập số lượng..." oninput="updateTotal()">
-        </div>
-        
-        <div style="margin: 10px 0; font-weight: bold; border-top: 1px solid #222; padding-top: 10px;">
-            Tổng: <span id="total-price" style="color: var(--primary);">0 đ</span>
-        </div>
+        <div id="qty-container"><input type="number" id="quantity" placeholder="Nhập số lượng..." oninput="updateTotal()"></div>
+        <div style="margin: 10px 0; font-weight: bold; border-top: 1px solid #222; padding-top: 10px;">Tổng: <span id="total-price" style="color: var(--primary);">0 đ</span></div>
         <button class="btn-buy" onclick="confirmOrder()">XÁC NHẬN THANH TOÁN</button>
         <button class="btn-back" onclick="closeService()">QUAY LẠI</button>
     </div>
@@ -293,11 +320,13 @@
 
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script>
-    particlesJS("particles-js", {"particles":{"number":{"value":40},"color":{"value":"#00ff00"},"shape":{"type":"circle"},"opacity":{"value":0.3},"size":{"value":2},"line_linked":{"enable":true,"distance":120,"color":"#00ff00","opacity":0.1,"width":1},"move":{"enable":true,"speed":1}}});
+    particlesJS("particles-js", {"particles":{"number":{"value":50},"color":{"value":"#00ff00"},"shape":{"type":"circle"},"opacity":{"value":0.5},"size":{"value":2},"line_linked":{"enable":true,"distance":120,"color":"#00ff00","opacity":0.2,"width":1},"move":{"enable":true,"speed":1.5}}});
 
-    let basePrice = 0, currentPricePerUnit = 0, userBalance = 0;
-    // Sửa server: BH ít ngày rẻ hơn 0.2 và 0.3
-    let serverMultipliers = [0, -0.2, -0.3, 0.5]; 
+    let basePrice = 0, currentPricePerUnit = 0, currentPlatform = '', currentServiceType = '', userBalance = 0;
+    // Sửa giá: Server ít ngày rẻ hơn 0.3đ và 0.4đ
+    let serverMultipliers = [0, -0.3, -0.4, 0.5]; 
+
+    const LIMITS = {'follow': {min: 10, max: 2000}, 'tim': {min: 20, max: 5000}, 'like': {min: 20, max: 5000}, 'view': {min: 100, max: 100000}, 'other': {min: 10, max: 1000}};
 
     function updateBalanceUI() {
         document.getElementById('header-balance').innerText = userBalance.toLocaleString();
@@ -308,9 +337,29 @@
         document.getElementById('auth-screen').style.display = 'none';
         document.getElementById('main-header').style.display = 'flex';
         document.getElementById('main-content').style.display = 'block';
-        document.getElementById('sys-announce').style.display = 'block';
         document.getElementById('overlay').style.display = 'block';
-        startFakeNotify();
+        document.getElementById('sys-announce').style.display = 'block';
+        updateBalanceUI();
+        startFakeOrders(); // Chạy thông báo ảo
+    }
+
+    // Logic người mua ảo (100 người ngẫu nhiên, trừ tên Huy)
+    function startFakeOrders() {
+        const users = ["tu_ban_hang", "ngoc_smm", "trung_tiktok", "minh_hieu", "hoang_vjp", "thanh_truc", "quang_mkt", "anh_dao", "phuong_thao", "tuan_anh", "duc_thinh", "van_nam", "chi_pheo", "thi_no", "son_tung", "jack_97", "den_vau", "bin_z", "karik", "suboi"];
+        const svs = ["Tăng Follow TikTok", "Tăng Tim TikTok", "View TikTok", "Like Facebook", "Theo dõi FB", "Member Telegram"];
+        const notify = document.getElementById('fake-notify');
+
+        setInterval(() => {
+            let user = users[Math.floor(Math.random() * users.length)];
+            let sv = svs[Math.floor(Math.random() * svs.length)];
+            let num = (Math.floor(Math.random() * 50) + 1) * 100;
+
+            if(user.toLowerCase().includes("huy")) return; // Loại bỏ tên Huy
+
+            notify.innerHTML = `<i class="fas fa-shopping-cart" style="color:var(--primary)"></i> <b>${user}</b> vừa mua <b>${num}</b> ${sv}`;
+            notify.style.display = 'block';
+            setTimeout(() => { notify.style.display = 'none'; }, 4000);
+        }, 7000);
     }
 
     function openService(name, price, placeholder, platform) {
@@ -319,13 +368,13 @@
         document.getElementById('sv-name').innerText = name;
         document.getElementById('target-link').placeholder = placeholder;
         basePrice = price;
+        currentPlatform = platform;
         setSv(document.getElementById('sv-btn-1'), 0);
     }
 
     function setSv(el, index) {
         document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('active'));
         el.classList.add('active');
-        // Đảm bảo giá không âm
         currentPricePerUnit = Math.max(0.1, basePrice + serverMultipliers[index]);
         document.getElementById('sv-price-display').innerText = currentPricePerUnit.toFixed(1);
         updateTotal();
@@ -342,31 +391,9 @@
     function closeSidebar() { document.getElementById('sidebar').classList.remove('active'); document.getElementById('overlay').style.display = 'none'; }
     function showPopup(id) { closeSidebar(); document.getElementById(id).style.display = 'block'; document.getElementById('overlay').style.display = 'block'; }
     function closePopups() { document.querySelectorAll('.popup').forEach(p => p.style.display = 'none'); document.getElementById('overlay').style.display = 'none'; }
-
-    // Logic người mua ảo (Trừ tên Huy)
-    function startFakeNotify() {
-        const names = ["an_le99", "tung_smm", "ngoc_beo", "trung88", "minh_hieu", "hoang_vjp", "thanh_truc", "quang_cao", "dv_fb", "linh_ka"];
-        const services = ["Tăng Follow TikTok", "Tăng Tim TikTok", "View TikTok", "Like Facebook", "Theo dõi FB"];
-        const notifyBox = document.getElementById('fake-notification');
-
-        setInterval(() => {
-            const randomName = names[Math.floor(Math.random() * names.length)];
-            const randomSv = services[Math.floor(Math.random() * services.length)];
-            const randomQty = (Math.floor(Math.random() * 100) + 1) * 10;
-            
-            // Bảo mật: Không bao giờ hiện tên Huy
-            if(randomName.toLowerCase().includes("huy")) return;
-
-            notifyBox.innerHTML = `<b>@${randomName}</b> vừa mua <span style="color:var(--primary)">${randomQty}</span> ${randomSv}`;
-            notifyBox.style.display = 'block';
-
-            setTimeout(() => { notifyBox.style.display = 'none'; }, 4000);
-        }, 8000);
-    }
-
-    function switchAuth(mode) {
-        document.getElementById('login-form').style.display = mode === 'login' ? 'block' : 'none';
-        document.getElementById('register-form').style.display = mode === 'login' ? 'none' : 'block';
+    function switchAuth(mode) { 
+        document.getElementById('login-form').style.display = mode === 'login' ? 'block' : 'none'; 
+        document.getElementById('register-form').style.display = mode === 'register' ? 'block' : 'none'; 
     }
 </script>
 </body>

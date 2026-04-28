@@ -34,7 +34,7 @@
         .user-header-info { display: flex; align-items: center; gap: 8px; color: var(--primary); font-weight: bold; font-size: 14px; }
         .balance-box { background: rgba(0, 255, 0, 0.1); padding: 5px 12px; border-radius: 20px; border: 1px solid var(--primary); font-size: 13px; color: var(--primary); }
 
-        /* Sidebar Nâng Cấp */
+        /* Sidebar */
         .sidebar {
             position: fixed; top: 0; left: -280px; width: 280px; height: 100%;
             background: #0d0d0d; border-right: 1px solid var(--primary);
@@ -49,8 +49,7 @@
         .sidebar-username { font-weight: bold; color: var(--primary); font-size: 1.1rem; }
 
         .menu-label { padding: 15px 20px 5px; font-size: 12px; color: #666; text-transform: uppercase; font-weight: bold; }
-        .sidebar-item { padding: 12px 20px; display: flex; align-items: center; gap: 12px; cursor: pointer; transition: 0.2s; border-bottom: 1px solid #111; }
-        .sidebar-item:active { background: #1a1a1a; color: var(--primary); }
+        .sidebar-item { padding: 12px 20px; display: flex; align-items: center; gap: 12px; cursor: pointer; border-bottom: 1px solid #111; }
         .sidebar-item i { width: 20px; text-align: center; }
         .status-tag { margin-left: auto; font-size: 10px; padding: 2px 6px; border-radius: 4px; background: #444; color: #fff; }
 
@@ -59,16 +58,17 @@
         .system-title { text-align: center; color: var(--primary); font-weight: bold; font-size: 1.2rem; margin-bottom: 25px; }
 
         .section-title { font-size: 0.9rem; margin: 20px 0 10px; font-weight: bold; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
 
         .card {
             background: #1a1a1a; border: 1px solid var(--border); border-radius: 8px;
             padding: 15px 5px; text-align: center; font-size: 0.85rem; font-weight: 500;
-            cursor: pointer;
+            cursor: pointer; transition: 0.2s;
         }
+        .card:active { background: #222; border-color: var(--primary); }
         .vip-card { grid-column: span 2; border: 1px solid #ffd700; color: #ffd700; }
 
-        /* Panel chi tiết & Server */
+        /* Form đặt hàng */
         .panel { display: none; background: var(--card); border-radius: 12px; border: 1px solid var(--primary); padding: 15px; margin-top: 10px; }
         .server-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
         .server-btn {
@@ -77,12 +77,12 @@
         }
         .server-btn.active { border-color: var(--primary); color: var(--primary); background: rgba(0,255,0,0.05); }
 
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing: border-box; outline: none; }
         .btn-buy { width: 100%; padding: 12px; background: var(--primary); border: none; border-radius: 6px; font-weight: bold; color: #000; cursor: pointer; margin-top: 15px; }
         .btn-back { width: 100%; padding: 10px; background: #333; border: none; border-radius: 6px; color: #fff; margin-top: 8px; cursor: pointer; }
 
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 250; display: none; }
         
-        /* Popup QR & Giftcode */
         .popup {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 90%; max-width: 320px; background: var(--card);
@@ -97,15 +97,15 @@
 <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
 <div class="header">
-    <div onclick="toggleSidebar()"><i class="fas fa-bars" style="font-size: 24px;"></i></div>
-    <div class="user-header-info"><i class="fas fa-user-circle"></i> <span class="display-name">Nguyễn Quốc Huy</span></div>
+    <div onclick="toggleSidebar()"><i class="fas fa-bars" style="font-size: 24px; cursor: pointer;"></i></div>
+    <div class="user-header-info"><i class="fas fa-user-circle"></i> <span>Nguyễn Quốc Huy</span></div>
     <div class="balance-box"><i class="fas fa-wallet"></i> 0 đ</div>
 </div>
 
 <div class="sidebar" id="sidebar">
     <div class="sidebar-user-section">
         <i class="fas fa-user-circle"></i>
-        <div class="sidebar-username display-name">Nguyễn Quốc Huy</div>
+        <div class="sidebar-username">Nguyễn Quốc Huy</div>
         <div style="font-size: 12px; color: #888; margin-top: 5px;">Số dư: 0 đ</div>
     </div>
 
@@ -128,6 +128,7 @@
 <div class="popup" id="qr-popup">
     <h3 style="color: var(--primary);">NẠP QUA QR</h3>
     <img src="https://api.vietqr.io/image/970422-0397208110-v6S9k9m.jpg?accountName=NGUYEN%20QUOC%20HUY" style="width: 100%; border-radius: 10px; margin-bottom: 10px;">
+    <p style="font-size: 12px;">Nạp tối thiểu 5,000đ</p>
     <button class="btn-back" onclick="closePopups()">ĐÓNG</button>
 </div>
 
@@ -138,38 +139,65 @@
     <button class="btn-back" onclick="closePopups()">HỦY</button>
 </div>
 
-<div class="container" id="main-ui">
-    <div class="system-title">SMM VIỆT NAM SYSTEM</div>
+<div class="container" id="main-content">
+    <div id="home-view">
+        <div class="system-title">SMM VIỆT NAM SYSTEM</div>
 
-    <div class="section-title" style="color: var(--primary);"><i class="fab fa-tiktok"></i> TIKTOK SERVICES</div>
-    <div class="grid">
-        <div class="card vip-card" onclick="openService('Lên Tick Xanh TikTok', 150000)">LÊN TICK XANH TIKTOK</div>
-        <div class="card" onclick="openService('Tăng Tim TikTok', 2)">Tăng Tim</div>
-        <div class="card" onclick="openService('Tăng Follow TikTok', 5)">Tăng Follow</div>
-        <div class="card" onclick="openService('Tăng View TikTok', 1)">Tăng View</div>
-        <div class="card" onclick="openService('Tăng Share TikTok', 3)">Tăng Share</div>
-        <div class="card" onclick="openService('Lưu Video TikTok', 2)">Tăng Lưu</div>
-    </div>
+        <div class="section-title" style="color: var(--primary);"><i class="fab fa-tiktok"></i> TIKTOK SERVICES</div>
+        <div class="grid">
+            <div class="card vip-card" onclick="openService('Lên Tick Xanh TikTok', 150000)">LÊN TICK XANH TIKTOK</div>
+            <div class="card" onclick="openService('Tăng Tim TikTok', 2)">Tăng Tim</div>
+            <div class="card" onclick="openService('Tăng Follow TikTok', 5)">Tăng Follow</div>
+            <div class="card" onclick="openService('Tăng View TikTok', 1)">Tăng View</div>
+            <div class="card" onclick="openService('Tăng Share TikTok', 3)">Tăng Share</div>
+            <div class="card" onclick="openService('Đăng Lại TikTok', 4)">Đăng Lại</div>
+            <div class="card" onclick="openService('Lưu Video TikTok', 2)">Tăng Lưu</div>
+        </div>
 
-    <div class="section-title" style="color: #1877F2;"><i class="fab fa-facebook"></i> FACEBOOK SERVICES</div>
-    <div class="grid">
-        <div class="card vip-card" style="border-color: #1877F2; color: #1877F2;" onclick="openService('Lên Tick Xanh Facebook', 200000)">LÊN TICK XANH FACEBOOK</div>
-        <div class="card" onclick="openService('Like Bài Viết FB', 3)">Like Bài Viết</div>
-        <div class="card" onclick="openService('Theo Dõi (Follow) FB', 6)">Theo Dõi</div>
-        <div class="card" onclick="openService('Tăng Share FB', 5)">Tăng Share</div>
-        <div class="card" onclick="openService('Cảm Xúc FB', 4)">Cảm Xúc</div>
+        <div class="section-title" style="color: #1877F2;"><i class="fab fa-facebook"></i> FACEBOOK SERVICES</div>
+        <div class="grid">
+            <div class="card vip-card" style="border-color: #1877F2; color: #1877F2;" onclick="openService('Lên Tick Xanh Facebook', 200000)">LÊN TICK XANH FACEBOOK</div>
+            <div class="card" onclick="openService('Like Bài Viết FB', 3)">Like Bài Viết</div>
+            <div class="card" onclick="openService('Theo Dõi FB', 6)">Theo Dõi</div>
+            <div class="card" onclick="openService('Tăng Share FB', 5)">Tăng Share</div>
+            <div class="card" onclick="openService('Cảm Xúc FB', 4)">Cảm Xúc</div>
+            <div class="card" onclick="openService('View Video FB', 2)">View Video</div>
+        </div>
+
+        <div class="section-title" style="color: #E1306C;"><i class="fab fa-instagram"></i> INSTAGRAM SERVICES</div>
+        <div class="grid">
+            <div class="card" onclick="openService('Like Instagram', 3)">Tăng Like</div>
+            <div class="card" onclick="openService('Follow Instagram', 7)">Tăng Follow</div>
+            <div class="card" onclick="openService('View Instagram', 2)">Tăng View</div>
+        </div>
+
+        <div class="section-title" style="color: #0088cc;"><i class="fab fa-telegram"></i> TELEGRAM SERVICES</div>
+        <div class="grid">
+            <div class="card" onclick="openService('Tăng Member Telegram', 8)">Tăng Member</div>
+            <div class="card" onclick="openService('Tăng View Telegram', 1)">Tăng View</div>
+            <div class="card" onclick="openService('Tăng Vote Telegram', 4)">Tăng Vote</div>
+            <div class="card" onclick="openService('Tăng Reaction Telegram', 2)">Tăng Reaction</div>
+        </div>
+
+        <div class="section-title" style="color: #ff4d00;"><i class="fas fa-shopping-bag"></i> SHOPEE SERVICES</div>
+        <div class="grid">
+            <div class="card" onclick="openService('Tăng Follow Shopee', 10)">Tăng Follow</div>
+            <div class="card" onclick="openService('Like Sản Phẩm Shopee', 5)">Like Sản Phẩm</div>
+            <div class="card" onclick="openService('View Sản Phẩm Shopee', 3)">Tăng View</div>
+            <div class="card" onclick="openService('Đánh Giá Shopee', 1000)">Đánh Giá 5*</div>
+        </div>
     </div>
 
     <div id="detail-panel" class="panel">
         <h3 id="sv-name" style="margin: 0; color: var(--primary);">Tên dịch vụ</h3>
-        <p style="font-size: 11px; color: #888; margin-bottom: 10px;">Giá gốc: <span id="sv-price">0</span>đ / mỗi đơn vị</p>
+        <p style="font-size: 11px; color: #888; margin-bottom: 10px;">Giá: <span id="sv-price">0</span>đ / đơn vị</p>
         
         <label style="font-size: 12px; font-weight: bold;">CHỌN SERVER:</label>
         <div class="server-grid">
-            <div class="server-btn active" onclick="setSv(this, 1)">SV 1 (Giá rẻ)</div>
-            <div class="server-btn" onclick="setSv(this, 2)">SV 2 (Tốc độ)</div>
-            <div class="server-btn" onclick="setSv(this, 3)">SV 3 (VIP)</div>
-            <div class="server-btn" onclick="setSv(this, 4)">SV 4 (Bảo hành)</div>
+            <div class="server-btn active" onclick="setSv(this)">SV 1 (Giá rẻ)</div>
+            <div class="server-btn" onclick="setSv(this)">SV 2 (Tốc độ)</div>
+            <div class="server-btn" onclick="setSv(this)">SV 3 (VIP)</div>
+            <div class="server-btn" onclick="setSv(this)">SV 4 (Bảo hành)</div>
         </div>
 
         <input type="text" id="target-link" placeholder="Nhập Link bài viết hoặc ID...">
@@ -186,11 +214,13 @@
 <script>
     particlesJS("particles-js", {"particles":{"number":{"value":50},"color":{"value":"#00ff00"},"shape":{"type":"circle"},"opacity":{"value":0.5},"size":{"value":2},"line_linked":{"enable":true,"distance":120,"color":"#00ff00","opacity":0.2,"width":1},"move":{"enable":true,"speed":1.5}}});
 
-    let basePrice = 0;
+    let currentPrice = 0;
 
     function toggleSidebar() { 
-        document.getElementById('sidebar').classList.toggle('active'); 
-        document.getElementById('overlay').style.display = document.getElementById('sidebar').classList.contains('active') ? 'block' : 'none';
+        const sb = document.getElementById('sidebar');
+        const ov = document.getElementById('overlay');
+        sb.classList.toggle('active'); 
+        ov.style.display = sb.classList.contains('active') ? 'block' : 'none';
     }
 
     function closeSidebar() { 
@@ -200,6 +230,7 @@
 
     function showPopup(id) {
         closeSidebar();
+        document.querySelectorAll('.popup').forEach(p => p.style.display = 'none');
         document.getElementById(id).style.display = 'block';
         document.getElementById('overlay').style.display = 'block';
     }
@@ -210,30 +241,28 @@
     }
 
     function openService(name, price) {
-        document.querySelectorAll('.section-title, .grid, .system-title').forEach(el => el.style.display = 'none');
+        document.getElementById('home-view').style.display = 'none';
         document.getElementById('detail-panel').style.display = 'block';
         document.getElementById('sv-name').innerText = name;
         document.getElementById('sv-price').innerText = price;
-        basePrice = price;
+        currentPrice = price;
         updateTotal();
     }
 
-    function setSv(el, num) {
+    function setSv(el) {
         document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('active'));
         el.classList.add('active');
-        // Bạn có thể cộng thêm tiền cho mỗi server ở đây nếu muốn
     }
 
     function closeService() {
         document.getElementById('detail-panel').style.display = 'none';
-        document.querySelectorAll('.section-title, .grid, .system-title').forEach(el => {
-            el.style.display = el.classList.contains('grid') ? 'grid' : (el.classList.contains('section-title') ? 'flex' : 'block');
-        });
+        document.getElementById('home-view').style.display = 'block';
+        document.getElementById('quantity').value = '';
     }
 
     function updateTotal() {
         const qty = document.getElementById('quantity').value || 0;
-        document.getElementById('total-price').innerText = (qty * basePrice).toLocaleString() + ' đ';
+        document.getElementById('total-price').innerText = (qty * currentPrice).toLocaleString() + ' đ';
     }
 
     function confirmOrder() {

@@ -41,6 +41,8 @@
             z-index: 300; transition: 0.4s; padding: 0; box-sizing: border-box;
         }
         .sidebar.active { left: 0; }
+        .close-sidebar { position: absolute; top: 15px; right: 15px; color: var(--primary); font-size: 20px; cursor: pointer; }
+        
         .sidebar-user-section {
             padding: 30px 20px; background: linear-gradient(to bottom, #111, #000);
             border-bottom: 1px solid var(--border); text-align: center;
@@ -103,6 +105,7 @@
 </div>
 
 <div class="sidebar" id="sidebar">
+    <div class="close-sidebar" onclick="closeSidebar()"><i class="fas fa-times"></i></div>
     <div class="sidebar-user-section">
         <i class="fas fa-user-circle"></i>
         <div class="sidebar-username">Nguyễn Quốc Huy</div>
@@ -117,7 +120,9 @@
     </div>
 
     <div class="menu-label">Quản trị</div>
-    <div class="sidebar-item" onclick="alert('Đã tạo 2000 mã Giftcode!')"><i class="fas fa-plus-circle"></i> Tạo 2000 Mã Giftcode</div>
+    <div class="sidebar-item" style="opacity: 0.6; cursor: not-allowed;">
+        <i class="fas fa-money-bill-wave"></i> Dòng tiền <span class="status-tag">Bảo trì</span>
+    </div>
     <div class="sidebar-item" onclick="alert('Đang tải dữ liệu...')"><i class="fas fa-history"></i> Xem Lịch Sử Đơn</div>
     
     <div class="menu-label">Hỗ trợ</div>
@@ -145,46 +150,46 @@
 
         <div class="section-title" style="color: var(--primary);"><i class="fab fa-tiktok"></i> TIKTOK SERVICES</div>
         <div class="grid">
-            <div class="card vip-card" onclick="openService('Lên Tick Xanh TikTok', 150000)">LÊN TICK XANH TIKTOK</div>
-            <div class="card" onclick="openService('Tăng Tim TikTok', 2)">Tăng Tim</div>
-            <div class="card" onclick="openService('Tăng Follow TikTok', 5)">Tăng Follow</div>
-            <div class="card" onclick="openService('Tăng View TikTok', 1)">Tăng View</div>
-            <div class="card" onclick="openService('Tăng Share TikTok', 3)">Tăng Share</div>
-            <div class="card" onclick="openService('Đăng Lại TikTok', 4)">Đăng Lại</div>
-            <div class="card" onclick="openService('Lưu Video TikTok', 2)">Tăng Lưu</div>
+            <div class="card vip-card" onclick="openService('Lên Tick Xanh TikTok', 150000, 'Link trang cá nhân')">LÊN TICK XANH TIKTOK</div>
+            <div class="card" onclick="openService('Tăng Tim TikTok', 0.3, 'Link video TikTok', 'tim')">Tăng Tim</div>
+            <div class="card" onclick="openService('Tăng Follow TikTok', 10, 'ID TikTok', 'follow')">Tăng Follow</div>
+            <div class="card" onclick="openService('Tăng View TikTok', 0.2, 'Link video TikTok', 'view')">Tăng View</div>
+            <div class="card" onclick="openService('Tăng Share TikTok', 1, 'Link video TikTok', 'share')">Tăng Share</div>
+            <div class="card" onclick="openService('Đăng Lại TikTok', 0.8, 'Link video TikTok', 'repost')">Đăng Lại</div>
+            <div class="card" onclick="openService('Lưu Video TikTok', 2, 'Link video TikTok')">Tăng Lưu</div>
         </div>
 
         <div class="section-title" style="color: #1877F2;"><i class="fab fa-facebook"></i> FACEBOOK SERVICES</div>
         <div class="grid">
-            <div class="card vip-card" style="border-color: #1877F2; color: #1877F2;" onclick="openService('Lên Tick Xanh Facebook', 200000)">LÊN TICK XANH FACEBOOK</div>
-            <div class="card" onclick="openService('Like Bài Viết FB', 3)">Like Bài Viết</div>
-            <div class="card" onclick="openService('Theo Dõi FB', 6)">Theo Dõi</div>
-            <div class="card" onclick="openService('Tăng Share FB', 5)">Tăng Share</div>
-            <div class="card" onclick="openService('Cảm Xúc FB', 4)">Cảm Xúc</div>
-            <div class="card" onclick="openService('View Video FB', 2)">View Video</div>
+            <div class="card vip-card" style="border-color: #1877F2; color: #1877F2;" onclick="openService('Lên Tick Xanh Facebook', 200000, 'Link trang cá nhân')">LÊN TICK XANH FACEBOOK</div>
+            <div class="card" onclick="openService('Like Bài Viết FB', 3, 'Link bài viết Facebook')">Like Bài Viết</div>
+            <div class="card" onclick="openService('Theo Dõi FB', 6, 'Link trang cá nhân Facebook')">Theo Dõi</div>
+            <div class="card" onclick="openService('Tăng Share FB', 5, 'Link bài viết Facebook')">Tăng Share</div>
+            <div class="card" onclick="openService('Cảm Xúc FB', 4, 'Link bài viết Facebook')">Cảm Xúc</div>
+            <div class="card" onclick="openService('View Video FB', 2, 'Link video Facebook')">View Video</div>
         </div>
 
         <div class="section-title" style="color: #E1306C;"><i class="fab fa-instagram"></i> INSTAGRAM SERVICES</div>
         <div class="grid">
-            <div class="card" onclick="openService('Like Instagram', 3)">Tăng Like</div>
-            <div class="card" onclick="openService('Follow Instagram', 7)">Tăng Follow</div>
-            <div class="card" onclick="openService('View Instagram', 2)">Tăng View</div>
+            <div class="card" onclick="openService('Like Instagram', 3, 'Link bài viết Instagram')">Tăng Like</div>
+            <div class="card" onclick="openService('Follow Instagram', 7, 'Link trang cá nhân Instagram')">Tăng Follow</div>
+            <div class="card" onclick="openService('View Instagram', 2, 'Link video/reel Instagram')">Tăng View</div>
         </div>
 
         <div class="section-title" style="color: #0088cc;"><i class="fab fa-telegram"></i> TELEGRAM SERVICES</div>
         <div class="grid">
-            <div class="card" onclick="openService('Tăng Member Telegram', 8)">Tăng Member</div>
-            <div class="card" onclick="openService('Tăng View Telegram', 1)">Tăng View</div>
-            <div class="card" onclick="openService('Tăng Vote Telegram', 4)">Tăng Vote</div>
-            <div class="card" onclick="openService('Tăng Reaction Telegram', 2)">Tăng Reaction</div>
+            <div class="card" onclick="openService('Tăng Member Telegram', 8, 'Link nhóm/kênh Telegram')">Tăng Member</div>
+            <div class="card" onclick="openService('Tăng View Telegram', 1, 'Link bài viết Telegram')">Tăng View</div>
+            <div class="card" onclick="openService('Tăng Vote Telegram', 4, 'Link bài bình chọn')">Tăng Vote</div>
+            <div class="card" onclick="openService('Tăng Reaction Telegram', 2, 'Link bài viết Telegram')">Tăng Reaction</div>
         </div>
 
         <div class="section-title" style="color: #ff4d00;"><i class="fas fa-shopping-bag"></i> SHOPEE SERVICES</div>
         <div class="grid">
-            <div class="card" onclick="openService('Tăng Follow Shopee', 10)">Tăng Follow</div>
-            <div class="card" onclick="openService('Like Sản Phẩm Shopee', 5)">Like Sản Phẩm</div>
-            <div class="card" onclick="openService('View Sản Phẩm Shopee', 3)">Tăng View</div>
-            <div class="card" onclick="openService('Đánh Giá Shopee', 1000)">Đánh Giá 5*</div>
+            <div class="card" onclick="openService('Tăng Follow Shopee', 10, 'Link shop Shopee')">Tăng Follow</div>
+            <div class="card" onclick="openService('Like Sản Phẩm Shopee', 5, 'Link sản phẩm Shopee')">Like Sản Phẩm</div>
+            <div class="card" onclick="openService('View Sản Phẩm Shopee', 3, 'Link sản phẩm Shopee')">Tăng View</div>
+            <div class="card" onclick="openService('Đánh Giá Shopee', 1000, 'Link sản phẩm Shopee')">Đánh Giá 5*</div>
         </div>
     </div>
 
@@ -194,13 +199,13 @@
         
         <label style="font-size: 12px; font-weight: bold;">CHỌN SERVER:</label>
         <div class="server-grid">
-            <div class="server-btn active" onclick="setSv(this)">SV 1 (Giá rẻ)</div>
-            <div class="server-btn" onclick="setSv(this)">SV 2 (Tốc độ)</div>
-            <div class="server-btn" onclick="setSv(this)">SV 3 (VIP)</div>
-            <div class="server-btn" onclick="setSv(this)">SV 4 (Bảo hành)</div>
+            <div class="server-btn active" id="sv-btn-1" onclick="setSv(this, 0)">SV 1</div>
+            <div class="server-btn" id="sv-btn-2" onclick="setSv(this, 1)">SV 2</div>
+            <div class="server-btn" id="sv-btn-3" onclick="setSv(this, 2)">SV 3</div>
+            <div class="server-btn" id="sv-btn-4" onclick="setSv(this, 3)">SV 4</div>
         </div>
 
-        <input type="text" id="target-link" placeholder="Nhập Link bài viết hoặc ID...">
+        <input type="text" id="target-link" placeholder="Nhập Link...">
         <input type="number" id="quantity" placeholder="Nhập số lượng..." oninput="updateTotal()">
         <div style="margin: 10px 0; font-weight: bold; border-top: 1px solid #222; padding-top: 10px;">
             Tổng thanh toán: <span id="total-price" style="color: var(--primary);">0 đ</span>
@@ -214,7 +219,9 @@
 <script>
     particlesJS("particles-js", {"particles":{"number":{"value":50},"color":{"value":"#00ff00"},"shape":{"type":"circle"},"opacity":{"value":0.5},"size":{"value":2},"line_linked":{"enable":true,"distance":120,"color":"#00ff00","opacity":0.2,"width":1},"move":{"enable":true,"speed":1.5}}});
 
-    let currentPrice = 0;
+    let basePrice = 0;
+    let currentServiceType = '';
+    let serverMultipliers = [0, 0, 0, 0]; // Chênh lệch giá
 
     function toggleSidebar() { 
         const sb = document.getElementById('sidebar');
@@ -240,18 +247,33 @@
         document.getElementById('overlay').style.display = 'none';
     }
 
-    function openService(name, price) {
+    function openService(name, price, placeholder, type) {
         document.getElementById('home-view').style.display = 'none';
         document.getElementById('detail-panel').style.display = 'block';
         document.getElementById('sv-name').innerText = name;
-        document.getElementById('sv-price').innerText = price;
-        currentPrice = price;
-        updateTotal();
+        document.getElementById('target-link').placeholder = placeholder;
+        
+        basePrice = price;
+        currentServiceType = type;
+
+        // Thiết lập chênh lệch server dựa trên loại dịch vụ
+        if(type === 'follow') serverMultipliers = [0, 5, 10, 15]; // 10, 15, 20, 25
+        else if(type === 'view') serverMultipliers = [0, 0.2, 0.5, 0.8]; // 0.2 -> 1.0
+        else if(type === 'tim') serverMultipliers = [0, 0.4, 0.8, 1.2]; // 0.3 -> 1.5
+        else if(type === 'share') serverMultipliers = [0, 1, 2, 3]; // 1 -> 4
+        else if(type === 'repost') serverMultipliers = [0, 0.4, 0.8, 1.2]; // 0.8 -> 2
+        else serverMultipliers = [0, 0.1, 0.2, 0.3]; // Các sp khác 0.1-0.3đ
+
+        setSv(document.getElementById('sv-btn-1'), 0);
     }
 
-    function setSv(el) {
+    function setSv(el, index) {
         document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('active'));
         el.classList.add('active');
+        
+        let newPrice = basePrice + serverMultipliers[index];
+        document.getElementById('sv-price').innerText = newPrice.toFixed(2);
+        updateTotal();
     }
 
     function closeService() {
@@ -262,7 +284,8 @@
 
     function updateTotal() {
         const qty = document.getElementById('quantity').value || 0;
-        document.getElementById('total-price').innerText = (qty * currentPrice).toLocaleString() + ' đ';
+        const price = parseFloat(document.getElementById('sv-price').innerText);
+        document.getElementById('total-price').innerText = (qty * price).toLocaleString() + ' đ';
     }
 
     function confirmOrder() {

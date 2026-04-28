@@ -197,8 +197,8 @@
 
 <div class="popup" id="gift-popup">
     <h3 style="color: var(--primary);">NHẬP GIFTCODE</h3>
-    <input type="text" placeholder="Nhập mã của bạn...">
-    <button class="btn-buy" onclick="alert('Mã không hợp lệ')">XÁC NHẬN</button>
+    <input type="text" id="gift-code-input" placeholder="Nhập mã của bạn...">
+    <button class="btn-buy" onclick="handleRedeemGiftcode()">XÁC NHẬN</button>
     <button class="btn-back" onclick="closePopups()">HỦY</button>
 </div>
 
@@ -214,46 +214,47 @@
             <div class="card" onclick="openService('Tăng View TikTok', 0.2, 'Link video TikTok', 'view')">Tăng View</div>
             <div class="card" onclick="openService('Tăng Share TikTok', 1, 'Link video TikTok', 'share')">Tăng Share</div>
             <div class="card" onclick="openService('Đăng Lại TikTok', 0.8, 'Link video TikTok', 'repost')">Đăng Lại</div>
-            <div class="card" onclick="openService('Lưu Video TikTok', 2, 'Link video TikTok')">Tăng Lưu</div>
+            <div class="card" onclick="openService('Lưu Video TikTok', 2, 'Link video TikTok', 'luu')">Tăng Lưu</div>
         </div>
 
         <div class="section-title" style="color: #1877F2;"><i class="fab fa-facebook"></i> FACEBOOK SERVICES</div>
         <div class="grid">
             <div class="card vip-card" style="border-color: #1877F2; color: #1877F2;" onclick="openService('Lên Tick Xanh Facebook', 1500000, 'Link trang cá nhân Facebook', 'tick_xanh')">LÊN TICK XANH FACEBOOK</div>
-            <div class="card" onclick="openService('Like Bài Viết FB', 3, 'Link bài viết Facebook')">Like Bài Viết</div>
-            <div class="card" onclick="openService('Theo Dõi FB', 6, 'Link trang cá nhân Facebook')">Theo Dõi</div>
-            <div class="card" onclick="openService('Tăng Share FB', 5, 'Link bài viết Facebook')">Tăng Share</div>
-            <div class="card" onclick="openService('Cảm Xúc FB', 4, 'Link bài viết Facebook')">Cảm Xúc</div>
-            <div class="card" onclick="openService('View Video FB', 2, 'Link video Facebook')">View Video</div>
+            <div class="card" onclick="openService('Like Bài Viết FB', 3, 'Link bài viết Facebook', 'like')">Like Bài Viết</div>
+            <div class="card" onclick="openService('Theo Dõi FB', 6, 'Link trang cá nhân Facebook', 'follow')">Theo Dõi</div>
+            <div class="card" onclick="openService('Tăng Share FB', 5, 'Link bài viết Facebook', 'share')">Tăng Share</div>
+            <div class="card" onclick="openService('Cảm Xúc FB', 4, 'Link bài viết Facebook', 'cam_xuc')">Cảm Xúc</div>
+            <div class="card" onclick="openService('View Video FB', 2, 'Link video Facebook', 'view')">View Video</div>
         </div>
 
         <div class="section-title" style="color: #E1306C;"><i class="fab fa-instagram"></i> INSTAGRAM SERVICES</div>
         <div class="grid">
-            <div class="card" onclick="openService('Like Instagram', 3, 'Link bài viết Instagram')">Tăng Like</div>
-            <div class="card" onclick="openService('Follow Instagram', 7, 'Link trang cá nhân Instagram')">Tăng Follow</div>
-            <div class="card" onclick="openService('View Instagram', 2, 'Link video/reel Instagram')">Tăng View</div>
+            <div class="card" onclick="openService('Like Instagram', 3, 'Link bài viết Instagram', 'like')">Tăng Like</div>
+            <div class="card" onclick="openService('Follow Instagram', 7, 'Link trang cá nhân Instagram', 'follow')">Tăng Follow</div>
+            <div class="card" onclick="openService('View Instagram', 2, 'Link video/reel Instagram', 'view')">Tăng View</div>
         </div>
 
         <div class="section-title" style="color: #0088cc;"><i class="fab fa-telegram"></i> TELEGRAM SERVICES</div>
         <div class="grid">
-            <div class="card" onclick="openService('Tăng Member Telegram', 8, 'Link nhóm/kênh Telegram')">Tăng Member</div>
-            <div class="card" onclick="openService('Tăng View Telegram', 1, 'Link bài viết Telegram')">Tăng View</div>
-            <div class="card" onclick="openService('Tăng Vote Telegram', 4, 'Link bài bình chọn')">Tăng Vote</div>
-            <div class="card" onclick="openService('Tăng Reaction Telegram', 2, 'Link bài viết Telegram')">Tăng Reaction</div>
+            <div class="card" onclick="openService('Tăng Member Telegram', 8, 'Link nhóm/kênh Telegram', 'follow')">Tăng Member</div>
+            <div class="card" onclick="openService('Tăng View Telegram', 1, 'Link bài viết Telegram', 'view')">Tăng View</div>
+            <div class="card" onclick="openService('Tăng Vote Telegram', 4, 'Link bài bình chọn', 'other')">Tăng Vote</div>
+            <div class="card" onclick="openService('Tăng Reaction Telegram', 2, 'Link bài viết Telegram', 'other')">Tăng Reaction</div>
         </div>
 
         <div class="section-title" style="color: #ff4d00;"><i class="fas fa-shopping-bag"></i> SHOPEE SERVICES</div>
         <div class="grid">
-            <div class="card" onclick="openService('Tăng Follow Shopee', 10, 'Link shop Shopee')">Tăng Follow</div>
-            <div class="card" onclick="openService('Like Sản Phẩm Shopee', 5, 'Link sản phẩm Shopee')">Like Sản Phẩm</div>
-            <div class="card" onclick="openService('View Sản Phẩm Shopee', 3, 'Link sản phẩm Shopee')">Tăng View</div>
-            <div class="card" onclick="openService('Đánh Giá Shopee', 1000, 'Link sản phẩm Shopee')">Đánh Giá 5*</div>
+            <div class="card" onclick="openService('Tăng Follow Shopee', 10, 'Link shop Shopee', 'follow')">Tăng Follow</div>
+            <div class="card" onclick="openService('Like Sản Phẩm Shopee', 5, 'Link sản phẩm Shopee', 'like')">Like Sản Phẩm</div>
+            <div class="card" onclick="openService('View Sản Phẩm Shopee', 3, 'Link sản phẩm Shopee', 'view')">Tăng View</div>
+            <div class="card" onclick="openService('Đánh Giá Shopee', 1000, 'Link sản phẩm Shopee', 'other')">Đánh Giá 5*</div>
         </div>
     </div>
 
     <div id="detail-panel" class="panel">
         <h3 id="sv-name" style="margin: 0; color: var(--primary);">Tên dịch vụ</h3>
-        <p style="font-size: 11px; color: #888; margin-bottom: 10px;">Giá: <span id="sv-price-display">0</span>đ / đơn vị</p>
+        <p style="font-size: 11px; color: #888; margin-bottom: 5px;">Giá: <span id="sv-price-display">0</span>đ / đơn vị</p>
+        <p id="limit-info" style="font-size: 11px; color: var(--primary); margin-bottom: 10px; font-weight: bold;"></p>
         
         <div id="server-selection">
             <label style="font-size: 12px; font-weight: bold;">CHỌN SERVER:</label>
@@ -283,12 +284,55 @@
     particlesJS("particles-js", {"particles":{"number":{"value":50},"color":{"value":"#00ff00"},"shape":{"type":"circle"},"opacity":{"value":0.5},"size":{"value":2},"line_linked":{"enable":true,"distance":120,"color":"#00ff00","opacity":0.2,"width":1},"move":{"enable":true,"speed":1.5}}});
 
     let basePrice = 0;
-    let currentPricePerUnit = 0; // Giá thực tế của đơn vị (số)
+    let currentPricePerUnit = 0; 
     let currentServiceType = '';
     let serverMultipliers = [0, 0, 0, 0];
-    let userBalance = 0; // Biến lưu số dư người dùng
+    let userBalance = 0; 
 
-    // Khởi tạo hiển thị số dư
+    // QUẢN LÝ GIỚI HẠN
+    const LIMITS = {
+        'follow': { min: 10, max: 2000 },
+        'tim': { min: 20, max: 5000 },
+        'like': { min: 20, max: 5000 },
+        'cam_xuc': { min: 20, max: 5000 },
+        'view': { min: 100, max: 100000 },
+        'other': { min: 10, max: 1000 }
+    };
+
+    // QUẢN LÝ GIFTCODE (Lưu trữ trong LocalStorage để mỗi tài khoản chỉ nhập được 1 lần)
+    const GIFTCODE_DATA = {
+        'HUYADMIN': 500000,   // Tặng 500k
+        'CHAO2026': 100000,   // Tặng 100k
+        'FREECOIN': 20000     // Tặng 20k
+    };
+
+    function handleRedeemGiftcode() {
+        const inputCode = document.getElementById('gift-code-input').value.trim().toUpperCase();
+        if(!inputCode) return;
+
+        // Kiểm tra xem mã đã từng được nhập chưa
+        let usedCodes = JSON.parse(localStorage.getItem('used_giftcodes') || '[]');
+        
+        if(usedCodes.includes(inputCode)) {
+            alert('Lỗi: Bạn đã nhập mã này rồi, không thể nhập lại!');
+            return;
+        }
+
+        if(GIFTCODE_DATA[inputCode]) {
+            const reward = GIFTCODE_DATA[inputCode];
+            userBalance += reward;
+            usedCodes.push(inputCode);
+            localStorage.setItem('used_giftcodes', JSON.stringify(usedCodes));
+            
+            updateBalanceUI();
+            alert(`Thành công! Bạn nhận được ${reward.toLocaleString()}đ vào tài khoản.`);
+            closePopups();
+        } else {
+            alert('Mã Giftcode không hợp lệ hoặc đã hết hạn!');
+        }
+        document.getElementById('gift-code-input').value = '';
+    }
+
     function updateBalanceUI() {
         document.getElementById('header-balance').innerText = userBalance.toLocaleString();
         document.getElementById('sidebar-balance').innerText = userBalance.toLocaleString();
@@ -347,7 +391,7 @@
         document.getElementById('overlay').style.display = 'none';
     }
 
-    function openService(name, price, placeholder, type) {
+    function openService(name, price, placeholder, type = 'other') {
         document.getElementById('home-view').style.display = 'none';
         document.getElementById('detail-panel').style.display = 'block';
         document.getElementById('sv-name').innerText = name;
@@ -356,6 +400,14 @@
         
         basePrice = price;
         currentServiceType = type;
+
+        // Hiển thị giới hạn cho người dùng thấy
+        const limit = LIMITS[type] || LIMITS['other'];
+        if(type !== 'tick_xanh') {
+            document.getElementById('limit-info').innerText = `Giới hạn: Min ${limit.min.toLocaleString()} - Max ${limit.max.toLocaleString()}`;
+        } else {
+            document.getElementById('limit-info').innerText = "";
+        }
 
         if(type === 'tick_xanh') {
             document.getElementById('server-selection').style.display = 'none';
@@ -370,9 +422,7 @@
             
             if(type === 'follow') serverMultipliers = [0, 5, 10, 15];
             else if(type === 'view') serverMultipliers = [0, 0.2, 0.5, 0.8];
-            else if(type === 'tim') serverMultipliers = [0, 0.4, 0.8, 1.2];
-            else if(type === 'share') serverMultipliers = [0, 1, 2, 3];
-            else if(type === 'repost') serverMultipliers = [0, 0.4, 0.8, 1.2];
+            else if(type === 'tim' || type === 'like' || type === 'cam_xuc') serverMultipliers = [0, 0.4, 0.8, 1.2];
             else serverMultipliers = [0, 0.1, 0.2, 0.3];
 
             setSv(document.getElementById('sv-btn-1'), 0);
@@ -385,7 +435,6 @@
         el.classList.add('active');
         
         currentPricePerUnit = basePrice + serverMultipliers[index];
-        // Hiển thị giá đơn vị chuẩn xác
         document.getElementById('sv-price-display').innerText = currentPricePerUnit.toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 2});
         updateTotal();
     }
@@ -407,21 +456,25 @@
         const qty = parseFloat(document.getElementById('quantity').value) || 0;
         const total = qty * currentPricePerUnit;
 
-        if(!link || qty <= 0) {
-            alert('Vui lòng điền đầy đủ thông tin và số lượng hợp lệ!'); 
-            return;
+        if(!link) { alert('Vui lòng nhập Link/ID!'); return; }
+
+        // KIỂM TRA GIỚI HẠN MIN MAX
+        if(currentServiceType !== 'tick_xanh') {
+            const limit = LIMITS[currentServiceType] || LIMITS['other'];
+            if(qty < limit.min || qty > limit.max) {
+                alert(`Số lượng không hợp lệ!\nDịch vụ này yêu cầu tối thiểu ${limit.min} và tối đa ${limit.max}.`);
+                return;
+            }
         }
 
-        // KIỂM TRA SỐ DƯ TÀI KHOẢN
         if (userBalance < total) {
-            alert('Số dư không đủ! Vui lòng nạp thêm tiền để thực hiện giao dịch.\nThiếu: ' + (total - userBalance).toLocaleString() + ' đ');
+            alert('Số dư không đủ! Vui lòng nạp thêm tiền hoặc nhập Giftcode.');
             return;
         }
 
-        // Nếu đủ tiền (Logic giả lập trừ tiền)
         userBalance -= total;
         updateBalanceUI();
-        alert('Đã gửi đơn hàng thành công!\nTổng thanh toán: ' + total.toLocaleString() + ' đ');
+        alert('Đã gửi đơn hàng thành công!');
         closeService();
     }
 </script>

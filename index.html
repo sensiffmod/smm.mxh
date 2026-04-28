@@ -23,6 +23,56 @@
 
         #particles-js { position: fixed; width: 100%; height: 100%; z-index: 1; top: 0; left: 0; pointer-events: none; }
 
+        /* Hiệu ứng ánh sáng chạy qua Card */
+        .card {
+            position: relative;
+            background: #1a1a1a; border: 1px solid var(--border); border-radius: 8px;
+            padding: 15px 5px; text-align: center; font-size: 0.85rem; font-weight: 500;
+            cursor: pointer; transition: 0.2s; overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(0, 255, 0, 0.1), transparent);
+            transform: skewX(-25deg);
+            transition: none;
+            animation: lightSweep 4s infinite;
+        }
+
+        @keyframes lightSweep {
+            0% { left: -100%; }
+            20% { left: 150%; }
+            100% { left: 150%; }
+        }
+
+        .card:active { background: #222; border-color: var(--primary); }
+        .vip-card { grid-column: span 2; border: 1px solid #ffd700; color: #ffd700; }
+        .vip-card::before { background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.2), transparent); }
+
+        /* Thông báo mua ảo */
+        #fake-notification {
+            position: fixed;
+            top: 65px; right: 10px;
+            background: rgba(20, 20, 20, 0.9);
+            border-left: 3px solid var(--primary);
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            z-index: 1000;
+            display: none;
+            animation: slideInRight 0.5s ease-out;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            max-width: 180px;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
         /* Auth Screen */
         #auth-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -73,14 +123,6 @@
         .section-title { font-size: 0.9rem; margin: 20px 0 10px; font-weight: bold; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
 
-        .card {
-            background: #1a1a1a; border: 1px solid var(--border); border-radius: 8px;
-            padding: 15px 5px; text-align: center; font-size: 0.85rem; font-weight: 500;
-            cursor: pointer; transition: 0.2s;
-        }
-        .card:active { background: #222; border-color: var(--primary); }
-        .vip-card { grid-column: span 2; border: 1px solid #ffd700; color: #ffd700; }
-
         /* Form đặt hàng */
         .panel { display: none; background: var(--card); border-radius: 12px; border: 1px solid var(--primary); padding: 15px; margin-top: 10px; }
         .server-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
@@ -112,7 +154,6 @@
             z-index: 400; display: none; text-align: center;
         }
 
-        /* Footer Copyright */
         .footer-copyright {
             text-align: center; color: #555; font-size: 11px; margin-top: 40px;
             padding: 20px; border-top: 1px solid #111; letter-spacing: 1px;
@@ -123,6 +164,8 @@
 
 <div id="particles-js"></div>
 <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<div id="fake-notification"></div>
 
 <div id="auth-screen">
     <div class="auth-container">
@@ -137,7 +180,6 @@
         <div id="login-form">
             <input type="text" placeholder="Tên đăng nhập hoặc Email">
             <input type="password" placeholder="Mật khẩu">
-            <p style="text-align: right; font-size: 11px; color: var(--primary); cursor: pointer;" onclick="alert('Vui lòng liên hệ Admin để đặt lại mật khẩu!')">Quên mật khẩu?</p>
             <button class="btn-buy" onclick="handleLogin()">ĐĂNG NHẬP NGAY</button>
         </div>
 
@@ -145,7 +187,7 @@
             <input type="text" placeholder="Tên người dùng">
             <input type="email" placeholder="Địa chỉ Email">
             <input type="password" placeholder="Mật khẩu mới">
-            <button class="btn-buy" onclick="alert('Đăng ký thành công! Hãy đăng nhập.')">TẠO TÀI KHOẢN</button>
+            <button class="btn-buy" onclick="alert('Đăng ký thành công!')">TẠO TÀI KHOẢN</button>
         </div>
     </div>
 </div>
@@ -179,16 +221,7 @@
     <div class="menu-label">Nạp Tiền</div>
     <div class="sidebar-item" onclick="showPopup('qr-popup')"><i class="fas fa-qrcode"></i> Nạp tiền QR</div>
     <div class="sidebar-item" onclick="showPopup('gift-popup')"><i class="fas fa-gift"></i> Nhập Giftcode</div>
-    <div class="sidebar-item" style="opacity: 0.6; cursor: not-allowed;">
-        <i class="fas fa-credit-card"></i> Nạp thẻ cào <span class="status-tag">Bảo trì</span>
-    </div>
 
-    <div class="menu-label">Quản trị</div>
-    <div class="sidebar-item" style="opacity: 0.6; cursor: not-allowed;">
-        <i class="fas fa-money-bill-wave"></i> Dòng tiền <span class="status-tag">Bảo trì</span>
-    </div>
-    <div class="sidebar-item" onclick="alert('Đang tải dữ liệu...')"><i class="fas fa-history"></i> Xem Lịch Sử Đơn</div>
-    
     <div class="menu-label">Hỗ trợ</div>
     <div class="sidebar-item" onclick="window.open('https://zalo.me/0397208110')"><i class="fab fa-whatsapp"></i> Liên Hệ Admin</div>
     <div class="sidebar-item" onclick="location.reload()" style="color: #ff4444; margin-top: 10px;"><i class="fas fa-sign-out-alt"></i> Đăng xuất</div>
@@ -196,8 +229,7 @@
 
 <div class="popup" id="qr-popup">
     <h3 style="color: var(--primary);">NẠP QUA QR</h3>
-    <img src="https://api.vietqr.io/image/970422-0397208110-v6S9k9m.jpg?accountName=NGUYEN%20QUOC%20HUY" style="width: 100%; border-radius: 10px; margin-bottom: 10px;">
-    <p style="font-size: 12px;">Nạp tối thiểu 5,000đ</p>
+    <img src="https://api.vietqr.io/image/970422-0397208110-v6S9k9m.jpg?accountName=NGUYEN%20QUOC%20HUY" style="width: 100%; border-radius: 10px;">
     <button class="btn-back" onclick="closePopups()">ĐÓNG</button>
 </div>
 
@@ -215,56 +247,26 @@
         <div class="section-title" style="color: var(--primary);"><i class="fab fa-tiktok"></i> TIKTOK SERVICES</div>
         <div class="grid">
             <div class="card vip-card" onclick="openService('Lên Tick Xanh TikTok', 1500000, 'Nhập ID TikTok', 'tiktok')">LÊN TICK XANH TIKTOK</div>
-            <div class="card" onclick="openService('Tăng Tim TikTok', 0.3, 'Link video TikTok', 'tiktok')">Tăng Tim</div>
+            <div class="card" onclick="openService('Tăng Tim TikTok', 0.8, 'Link video TikTok', 'tiktok')">Tăng Tim</div>
             <div class="card" onclick="openService('Tăng Follow TikTok', 10, 'ID TikTok', 'tiktok')">Tăng Follow</div>
-            <div class="card" onclick="openService('Tăng View TikTok', 0.2, 'Link video TikTok', 'tiktok')">Tăng View</div>
+            <div class="card" onclick="openService('Tăng View TikTok', 0.5, 'Link video TikTok', 'tiktok')">Tăng View</div>
             <div class="card" onclick="openService('Tăng Share TikTok', 1, 'Link video TikTok', 'tiktok')">Tăng Share</div>
-            <div class="card" onclick="openService('Đăng Lại TikTok', 0.8, 'Link video TikTok', 'tiktok')">Đăng Lại</div>
-            <div class="card" onclick="openService('Lưu Video TikTok', 2, 'Link video TikTok', 'tiktok')">Tăng Lưu</div>
+            <div class="card" onclick="openService('Đăng Lại TikTok', 0.9, 'Link video TikTok', 'tiktok')">Đăng Lại</div>
         </div>
 
         <div class="section-title" style="color: #1877F2;"><i class="fab fa-facebook"></i> FACEBOOK SERVICES</div>
         <div class="grid">
-            <div class="card vip-card" style="border-color: #1877F2; color: #1877F2;" onclick="openService('Lên Tick Xanh Facebook', 1500000, 'Link trang cá nhân Facebook', 'facebook')">LÊN TICK XANH FACEBOOK</div>
+            <div class="card vip-card" style="border-color: #1877F2; color: #1877F2;" onclick="openService('Lên Tick Xanh Facebook', 1500000, 'Link cá nhân FB', 'facebook')">LÊN TICK XANH FACEBOOK</div>
             <div class="card" onclick="openService('Like Bài Viết FB', 3, 'Link bài viết Facebook', 'facebook')">Like Bài Viết</div>
-            <div class="card" onclick="openService('Theo Dõi FB', 6, 'Link trang cá nhân Facebook', 'facebook')">Theo Dõi</div>
-            <div class="card" onclick="openService('Tăng Share FB', 5, 'Link bài viết Facebook', 'facebook')">Tăng Share</div>
-            <div class="card" onclick="openService('Cảm Xúc FB', 4, 'Link bài viết Facebook', 'facebook')">Cảm Xúc</div>
-            <div class="card" onclick="openService('View Video FB', 2, 'Link video Facebook', 'facebook')">View Video</div>
+            <div class="card" onclick="openService('Theo Dõi FB', 6, 'Link cá nhân Facebook', 'facebook')">Theo Dõi</div>
         </div>
 
-        <div class="section-title" style="color: #E1306C;"><i class="fab fa-instagram"></i> INSTAGRAM SERVICES</div>
-        <div class="grid">
-            <div class="card" onclick="openService('Like Instagram', 3, 'Link bài viết Instagram', 'instagram')">Tăng Like</div>
-            <div class="card" onclick="openService('Follow Instagram', 7, 'Link trang cá nhân Instagram', 'instagram')">Tăng Follow</div>
-            <div class="card" onclick="openService('View Instagram', 2, 'Link video/reel Instagram', 'instagram')">Tăng View</div>
-        </div>
-
-        <div class="section-title" style="color: #0088cc;"><i class="fab fa-telegram"></i> TELEGRAM SERVICES</div>
-        <div class="grid">
-            <div class="card" onclick="openService('Tăng Member Telegram', 8, 'Link nhóm/kênh Telegram', 'telegram')">Tăng Member</div>
-            <div class="card" onclick="openService('Tăng View Telegram', 1, 'Link bài viết Telegram', 'telegram')">Tăng View</div>
-            <div class="card" onclick="openService('Tăng Vote Telegram', 4, 'Link bài bình chọn', 'telegram')">Tăng Vote</div>
-            <div class="card" onclick="openService('Tăng Reaction Telegram', 2, 'Link bài viết Telegram', 'telegram')">Tăng Reaction</div>
-        </div>
-
-        <div class="section-title" style="color: #ff4d00;"><i class="fas fa-shopping-bag"></i> SHOPEE SERVICES</div>
-        <div class="grid">
-            <div class="card" onclick="openService('Tăng Follow Shopee', 10, 'Link shop Shopee', 'shopee')">Tăng Follow</div>
-            <div class="card" onclick="openService('Like Sản Phẩm Shopee', 5, 'Link sản phẩm Shopee', 'shopee')">Like Sản Phẩm</div>
-            <div class="card" onclick="openService('View Sản Phẩm Shopee', 3, 'Link sản phẩm Shopee', 'shopee')">Tăng View</div>
-            <div class="card" onclick="openService('Đánh Giá Shopee', 1000, 'Link sản phẩm Shopee', 'shopee')">Đánh Giá 5*</div>
-        </div>
-
-        <div class="footer-copyright">
-            © Bản Quyền thuộc về Huy SMM
-        </div>
+        <div class="footer-copyright">© Bản Quyền thuộc về Huy SMM</div>
     </div>
 
     <div id="detail-panel" class="panel">
         <h3 id="sv-name" style="margin: 0; color: var(--primary);">Tên dịch vụ</h3>
         <p style="font-size: 11px; color: #888; margin-bottom: 5px;">Giá: <span id="sv-price-display">0</span>đ / đơn vị</p>
-        <p id="limit-info" style="font-size: 11px; color: var(--primary); margin-bottom: 10px; font-weight: bold;"></p>
         
         <div id="server-selection">
             <label style="font-size: 12px; font-weight: bold;">CHỌN SERVER:</label>
@@ -282,7 +284,7 @@
         </div>
         
         <div style="margin: 10px 0; font-weight: bold; border-top: 1px solid #222; padding-top: 10px;">
-            Tổng thanh toán: <span id="total-price" style="color: var(--primary);">0 đ</span>
+            Tổng: <span id="total-price" style="color: var(--primary);">0 đ</span>
         </div>
         <button class="btn-buy" onclick="confirmOrder()">XÁC NHẬN THANH TOÁN</button>
         <button class="btn-back" onclick="closeService()">QUAY LẠI</button>
@@ -291,171 +293,80 @@
 
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script>
-    particlesJS("particles-js", {"particles":{"number":{"value":50},"color":{"value":"#00ff00"},"shape":{"type":"circle"},"opacity":{"value":0.5},"size":{"value":2},"line_linked":{"enable":true,"distance":120,"color":"#00ff00","opacity":0.2,"width":1},"move":{"enable":true,"speed":1.5}}});
+    particlesJS("particles-js", {"particles":{"number":{"value":40},"color":{"value":"#00ff00"},"shape":{"type":"circle"},"opacity":{"value":0.3},"size":{"value":2},"line_linked":{"enable":true,"distance":120,"color":"#00ff00","opacity":0.1,"width":1},"move":{"enable":true,"speed":1}}});
 
-    let basePrice = 0;
-    let currentPricePerUnit = 0; 
-    let currentPlatform = ''; // tiktok, facebook, instagram...
-    let currentServiceType = ''; 
-    let serverMultipliers = [0, 0, 0, 0];
-    let userBalance = 0; 
-
-    const LIMITS = {
-        'follow': { min: 10, max: 2000 },
-        'tim': { min: 20, max: 5000 },
-        'like': { min: 20, max: 5000 },
-        'cam_xuc': { min: 20, max: 5000 },
-        'view': { min: 100, max: 100000 },
-        'other': { min: 10, max: 1000 }
-    };
-
-    const GIFTCODE_DATA = {
-        'HUYADMIN': 500000,
-        'CHAO2026': 100000,
-        'FREECOIN': 20000
-    };
-
-    function handleRedeemGiftcode() {
-        const inputCode = document.getElementById('gift-code-input').value.trim().toUpperCase();
-        if(!inputCode) return;
-        let usedCodes = JSON.parse(localStorage.getItem('used_giftcodes') || '[]');
-        if(usedCodes.includes(inputCode)) { alert('Lỗi: Bạn đã nhập mã này rồi!'); return; }
-        if(GIFTCODE_DATA[inputCode]) {
-            userBalance += GIFTCODE_DATA[inputCode];
-            usedCodes.push(inputCode);
-            localStorage.setItem('used_giftcodes', JSON.stringify(usedCodes));
-            updateBalanceUI();
-            alert(`Thành công! Bạn nhận được ${GIFTCODE_DATA[inputCode].toLocaleString()}đ.`);
-            closePopups();
-        } else { alert('Mã Giftcode không hợp lệ!'); }
-        document.getElementById('gift-code-input').value = '';
-    }
+    let basePrice = 0, currentPricePerUnit = 0, userBalance = 0;
+    // Sửa server: BH ít ngày rẻ hơn 0.2 và 0.3
+    let serverMultipliers = [0, -0.2, -0.3, 0.5]; 
 
     function updateBalanceUI() {
         document.getElementById('header-balance').innerText = userBalance.toLocaleString();
         document.getElementById('sidebar-balance').innerText = userBalance.toLocaleString();
     }
 
-    function switchAuth(mode) {
-        const loginForm = document.getElementById('login-form'), regForm = document.getElementById('register-form');
-        const tabL = document.getElementById('tab-login'), tabR = document.getElementById('tab-register');
-        if(mode === 'login') {
-            loginForm.style.display = 'block'; regForm.style.display = 'none';
-            tabL.classList.add('active'); tabR.classList.remove('active');
-        } else {
-            loginForm.style.display = 'none'; regForm.style.display = 'block';
-            tabR.classList.add('active'); tabL.classList.remove('active');
-        }
-    }
-
     function handleLogin() {
         document.getElementById('auth-screen').style.display = 'none';
         document.getElementById('main-header').style.display = 'flex';
         document.getElementById('main-content').style.display = 'block';
-        document.getElementById('overlay').style.display = 'block';
         document.getElementById('sys-announce').style.display = 'block';
-        updateBalanceUI();
+        document.getElementById('overlay').style.display = 'block';
+        startFakeNotify();
     }
-
-    function closeAnnounce() { document.getElementById('sys-announce').style.display = 'none'; document.getElementById('overlay').style.display = 'none'; }
-    function toggleSidebar() { 
-        const sb = document.getElementById('sidebar'), ov = document.getElementById('overlay');
-        sb.classList.toggle('active'); ov.style.display = sb.classList.contains('active') ? 'block' : 'none';
-    }
-    function closeSidebar() { document.getElementById('sidebar').classList.remove('active'); document.getElementById('overlay').style.display = 'none'; }
-    function showPopup(id) { closeSidebar(); document.querySelectorAll('.popup').forEach(p => p.style.display = 'none'); document.getElementById(id).style.display = 'block'; document.getElementById('overlay').style.display = 'block'; }
-    function closePopups() { document.querySelectorAll('.popup').forEach(p => p.style.display = 'none'); document.getElementById('overlay').style.display = 'none'; }
 
     function openService(name, price, placeholder, platform) {
         document.getElementById('home-view').style.display = 'none';
         document.getElementById('detail-panel').style.display = 'block';
         document.getElementById('sv-name').innerText = name;
         document.getElementById('target-link').placeholder = placeholder;
-        document.getElementById('target-link').value = '';
         basePrice = price;
-        currentPlatform = platform;
-
-        // Phân loại service để áp min/max
-        let type = 'other';
-        if(name.toLowerCase().includes('follow') || name.toLowerCase().includes('theo dõi') || name.toLowerCase().includes('member')) type = 'follow';
-        else if(name.toLowerCase().includes('tim')) type = 'tim';
-        else if(name.toLowerCase().includes('like')) type = 'like';
-        else if(name.toLowerCase().includes('cảm xúc')) type = 'cam_xuc';
-        else if(name.toLowerCase().includes('view')) type = 'view';
-        currentServiceType = type;
-
-        const limit = LIMITS[type] || LIMITS['other'];
-        if(!name.includes('Tick Xanh')) {
-            document.getElementById('limit-info').innerText = `Giới hạn: Min ${limit.min.toLocaleString()} - Max ${limit.max.toLocaleString()}`;
-            document.getElementById('qty-container').style.display = 'block';
-            document.getElementById('server-selection').style.display = 'block';
-        } else {
-            document.getElementById('limit-info').innerText = "";
-            document.getElementById('qty-container').style.display = 'none';
-            document.getElementById('server-selection').style.display = 'none';
-            document.getElementById('quantity').value = 1;
-        }
-
-        serverMultipliers = (type === 'follow') ? [0, 5, 10, 15] : (type === 'view') ? [0, 0.2, 0.5, 0.8] : [0, 0.1, 0.2, 0.3];
         setSv(document.getElementById('sv-btn-1'), 0);
     }
 
     function setSv(el, index) {
         document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('active'));
         el.classList.add('active');
-        currentPricePerUnit = basePrice + serverMultipliers[index];
-        document.getElementById('sv-price-display').innerText = currentPricePerUnit.toLocaleString();
+        // Đảm bảo giá không âm
+        currentPricePerUnit = Math.max(0.1, basePrice + serverMultipliers[index]);
+        document.getElementById('sv-price-display').innerText = currentPricePerUnit.toFixed(1);
         updateTotal();
     }
 
-    function closeService() { document.getElementById('detail-panel').style.display = 'none'; document.getElementById('home-view').style.display = 'block'; }
     function updateTotal() {
         const qty = parseFloat(document.getElementById('quantity').value) || 0;
         document.getElementById('total-price').innerText = (qty * currentPricePerUnit).toLocaleString() + ' đ';
     }
 
-    function confirmOrder() {
-        const inputVal = document.getElementById('target-link').value.trim();
-        const placeholder = document.getElementById('target-link').placeholder;
-        const qty = parseFloat(document.getElementById('quantity').value) || 0;
-        const total = qty * currentPricePerUnit;
+    function closeService() { document.getElementById('detail-panel').style.display = 'none'; document.getElementById('home-view').style.display = 'block'; }
+    function closeAnnounce() { document.getElementById('sys-announce').style.display = 'none'; document.getElementById('overlay').style.display = 'none'; }
+    function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+    function closeSidebar() { document.getElementById('sidebar').classList.remove('active'); document.getElementById('overlay').style.display = 'none'; }
+    function showPopup(id) { closeSidebar(); document.getElementById(id).style.display = 'block'; document.getElementById('overlay').style.display = 'block'; }
+    function closePopups() { document.querySelectorAll('.popup').forEach(p => p.style.display = 'none'); document.getElementById('overlay').style.display = 'none'; }
 
-        // 1. KIỂM TRA ĐỊNH DẠNG LINK/ID
-        if(!inputVal) { alert('Vui lòng không để trống ô Link/ID!'); return; }
+    // Logic người mua ảo (Trừ tên Huy)
+    function startFakeNotify() {
+        const names = ["an_le99", "tung_smm", "ngoc_beo", "trung88", "minh_hieu", "hoang_vjp", "thanh_truc", "quang_cao", "dv_fb", "linh_ka"];
+        const services = ["Tăng Follow TikTok", "Tăng Tim TikTok", "View TikTok", "Like Facebook", "Theo dõi FB"];
+        const notifyBox = document.getElementById('fake-notification');
 
-        // Kiểm tra ID (phải có @)
-        if(placeholder.includes('ID') && !inputVal.startsWith('@')) {
-            alert('Lỗi: Định dạng ID TikTok phải bắt đầu bằng dấu @ (Ví dụ: @huy_smm)');
-            return;
-        }
+        setInterval(() => {
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            const randomSv = services[Math.floor(Math.random() * services.length)];
+            const randomQty = (Math.floor(Math.random() * 100) + 1) * 10;
+            
+            // Bảo mật: Không bao giờ hiện tên Huy
+            if(randomName.toLowerCase().includes("huy")) return;
 
-        // Kiểm tra Link (đúng nền tảng)
-        if(placeholder.includes('Link')) {
-            const val = inputVal.toLowerCase();
-            const check = {
-                'tiktok': 'tiktok.com',
-                'facebook': 'facebook.com',
-                'instagram': 'instagram.com',
-                'telegram': 't.me',
-                'shopee': 'shopee.vn'
-            };
-            if(check[currentPlatform] && !val.includes(check[currentPlatform])) {
-                alert(`Lỗi: Đây không phải là Link ${currentPlatform.toUpperCase()} hợp lệ!`);
-                return;
-            }
-        }
+            notifyBox.innerHTML = `<b>@${randomName}</b> vừa mua <span style="color:var(--primary)">${randomQty}</span> ${randomSv}`;
+            notifyBox.style.display = 'block';
 
-        // 2. KIỂM TRA GIỚI HẠN & SỐ DƯ
-        const limit = LIMITS[currentServiceType] || LIMITS['other'];
-        if(!document.getElementById('sv-name').innerText.includes('Tick Xanh') && (qty < limit.min || qty > limit.max)) {
-            alert(`Số lượng phải từ ${limit.min} đến ${limit.max}!`); return;
-        }
-        if (userBalance < total) { alert('Số dư không đủ!'); return; }
+            setTimeout(() => { notifyBox.style.display = 'none'; }, 4000);
+        }, 8000);
+    }
 
-        userBalance -= total;
-        updateBalanceUI();
-        alert('Gửi đơn thành công! Hệ thống đang xử lý.');
-        closeService();
+    function switchAuth(mode) {
+        document.getElementById('login-form').style.display = mode === 'login' ? 'block' : 'none';
+        document.getElementById('register-form').style.display = mode === 'login' ? 'none' : 'block';
     }
 </script>
 </body>

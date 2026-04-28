@@ -32,7 +32,6 @@
         .auth-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
         .auth-tab { flex: 1; padding: 10px; cursor: pointer; border-bottom: 2px solid #333; }
         .auth-tab.active { border-color: var(--primary); color: var(--primary); }
-        .google-btn { background: #fff; color: #000; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: bold; margin-top: 15px; cursor: pointer; padding: 12px; border-radius: 8px; width: 100%; box-sizing: border-box; border: none;}
 
         /* Header */
         .header { 
@@ -142,12 +141,6 @@
             <input type="password" placeholder="Mật khẩu mới">
             <button class="btn-buy" onclick="alert('Đăng ký thành công! Hãy đăng nhập.')">TẠO TÀI KHOẢN</button>
         </div>
-
-        <div style="margin: 15px 0; font-size: 12px; color: #555;">Hoặc</div>
-        <button class="google-btn">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_Logo.svg" width="18"> 
-            Tiếp tục với Google
-        </button>
     </div>
 </div>
 
@@ -215,7 +208,7 @@
 
         <div class="section-title" style="color: var(--primary);"><i class="fab fa-tiktok"></i> TIKTOK SERVICES</div>
         <div class="grid">
-            <div class="card vip-card" onclick="openService('Lên Tick Xanh TikTok', 150000, 'Link trang cá nhân')">LÊN TICK XANH TIKTOK</div>
+            <div class="card vip-card" onclick="openService('Lên Tick Xanh TikTok', 1500000, 'Nhập ID TikTok', 'tick_xanh')">LÊN TICK XANH TIKTOK</div>
             <div class="card" onclick="openService('Tăng Tim TikTok', 0.3, 'Link video TikTok', 'tim')">Tăng Tim</div>
             <div class="card" onclick="openService('Tăng Follow TikTok', 10, 'ID TikTok', 'follow')">Tăng Follow</div>
             <div class="card" onclick="openService('Tăng View TikTok', 0.2, 'Link video TikTok', 'view')">Tăng View</div>
@@ -226,7 +219,7 @@
 
         <div class="section-title" style="color: #1877F2;"><i class="fab fa-facebook"></i> FACEBOOK SERVICES</div>
         <div class="grid">
-            <div class="card vip-card" style="border-color: #1877F2; color: #1877F2;" onclick="openService('Lên Tick Xanh Facebook', 200000, 'Link trang cá nhân')">LÊN TICK XANH FACEBOOK</div>
+            <div class="card vip-card" style="border-color: #1877F2; color: #1877F2;" onclick="openService('Lên Tick Xanh Facebook', 1500000, 'Link trang cá nhân Facebook', 'tick_xanh')">LÊN TICK XANH FACEBOOK</div>
             <div class="card" onclick="openService('Like Bài Viết FB', 3, 'Link bài viết Facebook')">Like Bài Viết</div>
             <div class="card" onclick="openService('Theo Dõi FB', 6, 'Link trang cá nhân Facebook')">Theo Dõi</div>
             <div class="card" onclick="openService('Tăng Share FB', 5, 'Link bài viết Facebook')">Tăng Share</div>
@@ -262,16 +255,21 @@
         <h3 id="sv-name" style="margin: 0; color: var(--primary);">Tên dịch vụ</h3>
         <p style="font-size: 11px; color: #888; margin-bottom: 10px;">Giá: <span id="sv-price">0</span>đ / đơn vị</p>
         
-        <label style="font-size: 12px; font-weight: bold;">CHỌN SERVER:</label>
-        <div class="server-grid">
-            <div class="server-btn active" id="sv-btn-1" onclick="setSv(this, 0)">SV Việt (BH 30 ngày)</div>
-            <div class="server-btn" id="sv-btn-2" onclick="setSv(this, 1)">SV Tây (BH 15 ngày)</div>
-            <div class="server-btn" id="sv-btn-3" onclick="setSv(this, 2)">Bot ảo (BH 3 ngày)</div>
-            <div class="server-btn" id="sv-btn-4" onclick="setSv(this, 3)">VIP (BH Vĩnh viễn)</div>
+        <div id="server-selection">
+            <label style="font-size: 12px; font-weight: bold;">CHỌN SERVER:</label>
+            <div class="server-grid">
+                <div class="server-btn active" id="sv-btn-1" onclick="setSv(this, 0)">SV Việt (BH 30 ngày)</div>
+                <div class="server-btn" id="sv-btn-2" onclick="setSv(this, 1)">SV Tây (BH 15 ngày)</div>
+                <div class="server-btn" id="sv-btn-3" onclick="setSv(this, 2)">Bot ảo (BH 3 ngày)</div>
+                <div class="server-btn" id="sv-btn-4" onclick="setSv(this, 3)">VIP (BH Vĩnh viễn)</div>
+            </div>
         </div>
 
         <input type="text" id="target-link" placeholder="Nhập Link...">
-        <input type="number" id="quantity" placeholder="Nhập số lượng..." oninput="updateTotal()">
+        <div id="qty-container">
+            <input type="number" id="quantity" placeholder="Nhập số lượng..." oninput="updateTotal()">
+        </div>
+        
         <div style="margin: 10px 0; font-weight: bold; border-top: 1px solid #222; padding-top: 10px;">
             Tổng thanh toán: <span id="total-price" style="color: var(--primary);">0 đ</span>
         </div>
@@ -288,7 +286,6 @@
     let currentServiceType = '';
     let serverMultipliers = [0, 0, 0, 0];
 
-    // Auth Logic
     function switchAuth(mode) {
         const loginForm = document.getElementById('login-form');
         const regForm = document.getElementById('register-form');
@@ -308,8 +305,6 @@
         document.getElementById('auth-screen').style.display = 'none';
         document.getElementById('main-header').style.display = 'flex';
         document.getElementById('main-content').style.display = 'block';
-        
-        // Hiện thông báo bảng tin ngay sau khi đăng nhập
         document.getElementById('overlay').style.display = 'block';
         document.getElementById('sys-announce').style.display = 'block';
     }
@@ -319,7 +314,6 @@
         document.getElementById('overlay').style.display = 'none';
     }
 
-    // Sidebar & UI Logic
     function toggleSidebar() { 
         const sb = document.getElementById('sidebar');
         const ov = document.getElementById('overlay');
@@ -353,14 +347,28 @@
         basePrice = price;
         currentServiceType = type;
 
-        if(type === 'follow') serverMultipliers = [0, 5, 10, 15];
-        else if(type === 'view') serverMultipliers = [0, 0.2, 0.5, 0.8];
-        else if(type === 'tim') serverMultipliers = [0, 0.4, 0.8, 1.2];
-        else if(type === 'share') serverMultipliers = [0, 1, 2, 3];
-        else if(type === 'repost') serverMultipliers = [0, 0.4, 0.8, 1.2];
-        else serverMultipliers = [0, 0.1, 0.2, 0.3];
+        // Xử lý giao diện cho Tick Xanh
+        if(type === 'tick_xanh') {
+            document.getElementById('server-selection').style.display = 'none';
+            document.getElementById('qty-container').style.display = 'none';
+            document.getElementById('quantity').value = 1;
+            document.getElementById('sv-price').innerText = price.toLocaleString();
+            serverMultipliers = [0, 0, 0, 0];
+        } else {
+            document.getElementById('server-selection').style.display = 'block';
+            document.getElementById('qty-container').style.display = 'block';
+            document.getElementById('quantity').value = '';
+            
+            if(type === 'follow') serverMultipliers = [0, 5, 10, 15];
+            else if(type === 'view') serverMultipliers = [0, 0.2, 0.5, 0.8];
+            else if(type === 'tim') serverMultipliers = [0, 0.4, 0.8, 1.2];
+            else if(type === 'share') serverMultipliers = [0, 1, 2, 3];
+            else if(type === 'repost') serverMultipliers = [0, 0.4, 0.8, 1.2];
+            else serverMultipliers = [0, 0.1, 0.2, 0.3];
 
-        setSv(document.getElementById('sv-btn-1'), 0);
+            setSv(document.getElementById('sv-btn-1'), 0);
+        }
+        updateTotal();
     }
 
     function setSv(el, index) {
@@ -380,7 +388,8 @@
 
     function updateTotal() {
         const qty = document.getElementById('quantity').value || 0;
-        const price = parseFloat(document.getElementById('sv-price').innerText);
+        const priceText = document.getElementById('sv-price').innerText.replace(/,/g, '');
+        const price = parseFloat(priceText);
         document.getElementById('total-price').innerText = (qty * price).toLocaleString() + ' đ';
     }
 

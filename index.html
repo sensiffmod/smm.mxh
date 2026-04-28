@@ -23,7 +23,6 @@
 
         #particles-js { position: fixed; width: 100%; height: 100%; z-index: 1; top: 0; left: 0; pointer-events: none; }
 
-        /* Hiệu ứng ánh sáng chạy qua Card mỗi 2 giây */
         .card {
             position: relative;
             background: #1a1a1a; border: 1px solid var(--border); border-radius: 8px;
@@ -51,7 +50,6 @@
         .vip-card { grid-column: span 2; border: 1px solid #ffd700; color: #ffd700; }
         .vip-card::before { background: linear-gradient(to right, transparent, rgba(255, 215, 0, 0.3), transparent); }
 
-        /* Thông báo người mua ảo */
         #fake-notify {
             position: fixed;
             top: 65px;
@@ -72,14 +70,12 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
-        /* Bảng lịch sử đơn hàng */
         .history-table {
             width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 11px;
         }
         .history-table th { background: #222; color: var(--primary); padding: 8px; text-align: left; }
         .history-table td { padding: 8px; border-bottom: 1px solid #222; color: #ccc; }
 
-        /* Auth Screen */
         #auth-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--bg); z-index: 2000; display: flex; align-items: center; justify-content: center;
@@ -89,7 +85,6 @@
         .auth-tab { flex: 1; padding: 10px; cursor: pointer; border-bottom: 2px solid #333; }
         .auth-tab.active { border-color: var(--primary); color: var(--primary); }
 
-        /* Header */
         .header { 
             position: fixed; top: 0; width: 100%; height: 60px; 
             background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(5px);
@@ -101,7 +96,6 @@
         .user-header-info { display: flex; align-items: center; gap: 8px; color: var(--primary); font-weight: bold; font-size: 14px; }
         .balance-box { background: rgba(0, 255, 0, 0.1); padding: 5px 12px; border-radius: 20px; border: 1px solid var(--primary); font-size: 13px; color: var(--primary); }
 
-        /* Sidebar */
         .sidebar {
             position: fixed; top: 0; left: -280px; width: 280px; height: 100%;
             background: #0d0d0d; border-right: 1px solid var(--primary);
@@ -122,14 +116,12 @@
         .sidebar-item i { width: 20px; text-align: center; }
         .status-tag { margin-left: auto; font-size: 10px; padding: 2px 6px; border-radius: 4px; background: #444; color: #fff; }
 
-        /* Main Content */
         .container { display: none; position: relative; z-index: 2; padding: 80px 15px 30px; max-width: 500px; margin: 0 auto; }
         .system-title { text-align: center; color: var(--primary); font-weight: bold; font-size: 1.2rem; margin-bottom: 25px; }
 
         .section-title { font-size: 0.9rem; margin: 20px 0 10px; font-weight: bold; display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
 
-        /* Form đặt hàng */
         .panel { display: none; background: var(--card); border-radius: 12px; border: 1px solid var(--primary); padding: 15px; margin-top: 10px; }
         .server-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
         .server-btn {
@@ -142,7 +134,6 @@
         .btn-buy { width: 100%; padding: 12px; background: var(--primary); border: none; border-radius: 6px; font-weight: bold; color: #000; cursor: pointer; margin-top: 15px; }
         .btn-back { width: 100%; padding: 10px; background: #333; border: none; border-radius: 6px; color: #fff; margin-top: 8px; cursor: pointer; }
 
-        /* Announcement Popup */
         .announce-popup {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 85%; max-width: 340px; background: #111; border: 2px solid var(--primary);
@@ -195,7 +186,7 @@
             <input type="text" placeholder="Tên người dùng">
             <input type="email" placeholder="Địa chỉ Email">
             <input type="password" placeholder="Mật khẩu mới">
-            <button class="btn-buy" onclick="userBalance += 1500; updateBalanceUI(); alert('Đăng ký thành công! Bạn được tặng 1,500đ để trải nghiệm. Hãy đăng nhập.')">TẠO TÀI KHOẢN</button>
+            <button class="btn-buy" onclick="alert('Đăng ký thành công! Hãy đăng nhập.')">TẠO TÀI KHOẢN</button>
         </div>
     </div>
 </div>
@@ -206,7 +197,7 @@
     <div style="text-align: left; font-size: 13px; line-height: 1.6; color: #ddd; margin-bottom: 20px;">
         🚀 Chào mừng Bạn đến với <b>SMM VIỆT NAM!</b><br>
         💳 Nạp Bank/Thẻ cào tự động sau 30 giây.<br>
-        🎁 Khuyến mãi nạp lần đầu nhận thêm <b>25%</b>.<br>
+        🎁 Khuyến mãi nạp lần đầu nhận thêm <b>10%</b>.<br>
         📞 Zalo hỗ trợ: 0397208110
     </div>
     <button class="btn-buy" style="margin: 0;" onclick="closeAnnounce()">ĐÃ HIỂU</button>
@@ -249,9 +240,10 @@
 </div>
 
 <div class="popup" id="gift-popup">
-    <h3 style="color: var(--primary);">NHẬP GIFTCODE</h3>
-    <input type="text" id="gift-code-input" placeholder="Nhập mã của bạn...">
-    <button class="btn-buy" onclick="handleRedeemGiftcode()">XÁC NHẬN</button>
+    <h3 style="color: var(--primary);">NHẬP GIFTCODE NGẪU NHIÊN</h3>
+    <p style="font-size: 11px; color: #888;">Ví dụ: abcd233u2i4y2idjd</p>
+    <input type="text" id="gift-code-input" placeholder="Dán mã giftcode của bạn...">
+    <button class="btn-buy" onclick="handleRedeemGiftcode()">XÁC NHẬN NHẬN TIỀN</button>
     <button class="btn-back" onclick="closePopups()">HỦY</button>
 </div>
 
@@ -268,7 +260,7 @@
                 </tr>
             </thead>
             <tbody id="history-content">
-                </tbody>
+            </tbody>
         </table>
     </div>
     <button class="btn-back" onclick="closePopups()" style="margin-top: 15px;">ĐÓNG</button>
@@ -277,6 +269,13 @@
 <div class="container" id="main-content">
     <div id="home-view">
         <div class="system-title">SMM VIỆT NAM SYSTEM</div>
+
+        <div class="section-title" style="color: #FF0000;"><i class="fab fa-youtube"></i> YOUTUBE SERVICES</div>
+        <div class="grid">
+            <div class="card" onclick="openService('Tăng View Youtube', 10, 'Link video Youtube', 'youtube', [0, 10, 20, 40])">Tăng View</div>
+            <div class="card" onclick="openService('Tăng Like Youtube', 1, 'Link video Youtube', 'youtube', [0, 1, 2, 4])">Tăng Like</div>
+            <div class="card" onclick="openService('Tăng Sub Youtube', 1200, 'Link kênh Youtube', 'youtube', [0, 500, 1000, 1800])">Tăng Subscribe</div>
+        </div>
 
         <div class="section-title" style="color: var(--primary);"><i class="fab fa-tiktok"></i> TIKTOK SERVICES</div>
         <div class="grid">
@@ -299,29 +298,6 @@
             <div class="card" onclick="openService('View Video FB', 2, 'Link video Facebook', 'facebook')">View Video</div>
         </div>
 
-        <div class="section-title" style="color: #E1306C;"><i class="fab fa-instagram"></i> INSTAGRAM SERVICES</div>
-        <div class="grid">
-            <div class="card" onclick="openService('Like Instagram', 3, 'Link bài viết Instagram', 'instagram')">Tăng Like</div>
-            <div class="card" onclick="openService('Follow Instagram', 7, 'Link trang cá nhân Instagram', 'instagram')">Tăng Follow</div>
-            <div class="card" onclick="openService('View Instagram', 2, 'Link video/reel Instagram', 'instagram')">Tăng View</div>
-        </div>
-
-        <div class="section-title" style="color: #0088cc;"><i class="fab fa-telegram"></i> TELEGRAM SERVICES</div>
-        <div class="grid">
-            <div class="card" onclick="openService('Tăng Member Telegram', 8, 'Link nhóm/kênh Telegram', 'telegram')">Tăng Member</div>
-            <div class="card" onclick="openService('Tăng View Telegram', 1, 'Link bài viết Telegram', 'telegram')">Tăng View</div>
-            <div class="card" onclick="openService('Tăng Vote Telegram', 4, 'Link bài bình chọn', 'telegram')">Tăng Vote</div>
-            <div class="card" onclick="openService('Tăng Reaction Telegram', 2, 'Link bài viết Telegram', 'telegram')">Tăng Reaction</div>
-        </div>
-
-        <div class="section-title" style="color: #ff4d00;"><i class="fas fa-shopping-bag"></i> SHOPEE SERVICES</div>
-        <div class="grid">
-            <div class="card" onclick="openService('Tăng Follow Shopee', 10, 'Link shop Shopee', 'shopee')">Tăng Follow</div>
-            <div class="card" onclick="openService('Like Sản Phẩm Shopee', 5, 'Link sản phẩm Shopee', 'shopee')">Like Sản Phẩm</div>
-            <div class="card" onclick="openService('View Sản Phẩm Shopee', 3, 'Link sản phẩm Shopee', 'shopee')">Tăng View</div>
-            <div class="card" onclick="openService('Đánh Giá Shopee', 1000, 'Link sản phẩm Shopee', 'shopee')">Đánh Giá 5*</div>
-        </div>
-
         <div class="footer-copyright">© Bản Quyền thuộc về Huy SMM</div>
     </div>
 
@@ -333,10 +309,10 @@
         <div id="server-selection">
             <label style="font-size: 12px; font-weight: bold;">CHỌN SERVER:</label>
             <div class="server-grid">
-                <div class="server-btn active" id="sv-btn-1" onclick="setSv(this, 0)">SV Việt (BH 30 ngày)</div>
-                <div class="server-btn" id="sv-btn-2" onclick="setSv(this, 1)">SV Tây (BH 15 ngày)</div>
-                <div class="server-btn" id="sv-btn-3" onclick="setSv(this, 2)">Bot ảo (BH 3 ngày)</div>
-                <div class="server-btn" id="sv-btn-4" onclick="setSv(this, 3)">VIP (BH Vĩnh viễn)</div>
+                <div class="server-btn active" id="sv-btn-1" onclick="setSv(this, 0)">SV 1 (Ko bảo hành)</div>
+                <div class="server-btn" id="sv-btn-2" onclick="setSv(this, 1)">SV 2 (BH 7 ngày)</div>
+                <div class="server-btn" id="sv-btn-3" onclick="setSv(this, 2)">SV 3 (BH 30 ngày)</div>
+                <div class="server-btn" id="sv-btn-4" onclick="setSv(this, 3)">SV 4 (Vĩnh viễn)</div>
             </div>
         </div>
 
@@ -352,11 +328,9 @@
 <script>
     particlesJS("particles-js", {"particles":{"number":{"value":50},"color":{"value":"#00ff00"},"shape":{"type":"circle"},"opacity":{"value":0.5},"size":{"value":2},"line_linked":{"enable":true,"distance":120,"color":"#00ff00","opacity":0.2,"width":1},"move":{"enable":true,"speed":1.5}}});
 
-    let basePrice = 0, currentPricePerUnit = 0, currentPlatform = '', currentServiceType = '', userBalance = 0;
-    let orderHistory = []; // Mảng lưu lịch sử đơn
-    let serverMultipliers = [0, -0.3, -0.4, 0.5]; 
-
-    const LIMITS = {'follow': {min: 10, max: 2000}, 'tim': {min: 20, max: 5000}, 'like': {min: 20, max: 5000}, 'view': {min: 100, max: 100000}, 'other': {min: 10, max: 1000}};
+    let basePrice = 0, currentPricePerUnit = 0, currentPlatform = '', userBalance = 0;
+    let orderHistory = [];
+    let serverMultipliers = [0, 0.5, 1, 2]; 
 
     function updateBalanceUI() {
         document.getElementById('header-balance').innerText = userBalance.toLocaleString();
@@ -373,82 +347,88 @@
         startFakeOrders();
     }
 
-    // Logic người mua ảo: 6 giây (6000ms) mới xuất hiện 1 tên @...
     function startFakeOrders() {
         const users = ["tu_ban_hang", "ngoc_smm", "trung_tiktok", "minh_hieu", "hoang_vjp", "thanh_truc", "quang_mkt", "anh_dao", "phuong_thao", "tuan_anh", "duc_thinh", "van_nam", "chi_pheo", "thi_no", "son_tung", "jack_97", "den_vau", "bin_z", "karik", "suboi"];
-        const svs = ["Tăng Follow TikTok", "Tăng Tim TikTok", "View TikTok", "Like Facebook", "Theo dõi FB", "Member Telegram"];
+        const svs = ["Tăng View Youtube", "Tăng Tim TikTok", "Like Youtube", "Sub Youtube", "Like Facebook", "Theo dõi FB"];
         const notify = document.getElementById('fake-notify');
 
         setInterval(() => {
             let user = users[Math.floor(Math.random() * users.length)];
             let sv = svs[Math.floor(Math.random() * svs.length)];
             let num = (Math.floor(Math.random() * 50) + 1) * 100;
-
-            if(user.toLowerCase().includes("huy")) return; 
-
-            // Thêm @ vào trước tên
             notify.innerHTML = `<i class="fas fa-shopping-cart" style="color:var(--primary)"></i> <b>@${user}</b> vừa mua <b>${num}</b> ${sv}`;
             notify.style.display = 'block';
-            setTimeout(() => { notify.style.display = 'none'; }, 4000);
-        }, 6000); // Đổi thành 6 giây
+            setTimeout(() => { notify.style.display = 'none'; }, 3000);
+        }, 5000);
     }
 
-    function confirmOrder() {
-        const name = document.getElementById('sv-name').innerText;
-        const qty = parseFloat(document.getElementById('quantity').value) || 0;
-        const total = qty * currentPricePerUnit;
-
-        if (userBalance < total) { alert('Số dư không đủ!'); return; }
-
-        userBalance -= total;
-        updateBalanceUI();
+    // LOGIC GIFTCODE NGẪU NHIÊN THEO YÊU CẦU
+    function handleRedeemGiftcode() {
+        const codeInput = document.getElementById('gift-code-input').value.trim().toLowerCase();
+        if (!codeInput) return;
         
-        // Lưu vào lịch sử
-        orderHistory.push({ service: name, quantity: qty, price: total, status: 'Đang chạy' });
-        
-        alert('Gửi đơn thành công! Hệ thống đang xử lý.');
-        closeService();
-    }
+        // Điều kiện: Mã dài trên 10 ký tự, gồm cả chữ và số (định dạng ngẫu nhiên)
+        const randomRegex = /^(?=.*[a-z])(?=.*[0-9])[a-z0-9]{10,}$/;
 
-    function showHistory() {
-        closeSidebar();
-        const content = document.getElementById('history-content');
-        if(orderHistory.length === 0) {
-            content.innerHTML = '<tr><td colspan="4" style="text-align:center">Chưa có đơn hàng nào!</td></tr>';
+        if (randomRegex.test(codeInput)) {
+            // Nhận tiền ngẫu nhiên từ 1,000đ đến 100,000đ
+            const luckyAmount = Math.floor(Math.random() * (100000 - 1000 + 1)) + 1000;
+            userBalance += luckyAmount;
+            updateBalanceUI();
+            alert(`✅ Mã quà tặng hợp lệ!\nBạn đã nhận được: ${luckyAmount.toLocaleString()}đ`);
+            closePopups();
         } else {
-            content.innerHTML = orderHistory.map(order => `
-                <tr>
-                    <td>${order.service}</td>
-                    <td>${order.quantity}</td>
-                    <td>${order.price.toLocaleString()}đ</td>
-                    <td style="color:var(--primary)">${order.status}</td>
-                </tr>
-            `).join('');
+            alert('❌ Mã Giftcode không đúng định dạng ngẫu nhiên hoặc quá ngắn!');
         }
-        showPopup('history-popup');
     }
 
-    function openService(name, price, placeholder, platform) {
+    function openService(name, price, placeholder, platform, customMultipliers = null) {
         document.getElementById('home-view').style.display = 'none';
         document.getElementById('detail-panel').style.display = 'block';
         document.getElementById('sv-name').innerText = name;
         document.getElementById('target-link').placeholder = placeholder;
         basePrice = price;
         currentPlatform = platform;
+        if(customMultipliers) {
+            serverMultipliers = customMultipliers;
+        } else {
+            serverMultipliers = [0, 0.5, 1, 2];
+        }
         setSv(document.getElementById('sv-btn-1'), 0);
     }
 
     function setSv(el, index) {
         document.querySelectorAll('.server-btn').forEach(b => b.classList.remove('active'));
         el.classList.add('active');
-        currentPricePerUnit = Math.max(0.1, basePrice + serverMultipliers[index]);
-        document.getElementById('sv-price-display').innerText = currentPricePerUnit.toFixed(1);
+        currentPricePerUnit = basePrice + serverMultipliers[index];
+        document.getElementById('sv-price-display').innerText = currentPricePerUnit.toLocaleString();
         updateTotal();
     }
 
     function updateTotal() {
         const qty = parseFloat(document.getElementById('quantity').value) || 0;
         document.getElementById('total-price').innerText = (qty * currentPricePerUnit).toLocaleString() + ' đ';
+    }
+
+    function confirmOrder() {
+        const name = document.getElementById('sv-name').innerText;
+        const qty = parseFloat(document.getElementById('quantity').value) || 0;
+        const total = qty * currentPricePerUnit;
+        if (qty <= 0) { alert('Vui lòng nhập số lượng!'); return; }
+        if (userBalance < total) { alert('Số dư không đủ! Vui lòng nạp thêm.'); return; }
+        userBalance -= total;
+        updateBalanceUI();
+        orderHistory.push({ service: name, quantity: qty, price: total, status: 'Đang chạy' });
+        alert('✅ Đơn hàng đã được gửi thành công!');
+        closeService();
+    }
+
+    function showHistory() {
+        closeSidebar();
+        const content = document.getElementById('history-content');
+        content.innerHTML = orderHistory.length === 0 ? '<tr><td colspan="4" style="text-align:center">Chưa có đơn hàng nào</td></tr>' : 
+        orderHistory.map(o => `<tr><td>${o.service}</td><td>${o.quantity}</td><td>${o.price.toLocaleString()}đ</td><td style="color:var(--primary)">${o.status}</td></tr>`).join('');
+        showPopup('history-popup');
     }
 
     function closeService() { document.getElementById('detail-panel').style.display = 'none'; document.getElementById('home-view').style.display = 'block'; }
@@ -460,6 +440,8 @@
     function switchAuth(mode) { 
         document.getElementById('login-form').style.display = mode === 'login' ? 'block' : 'none'; 
         document.getElementById('register-form').style.display = mode === 'register' ? 'block' : 'none'; 
+        document.getElementById('tab-login').classList.toggle('active', mode === 'login');
+        document.getElementById('tab-register').classList.toggle('active', mode === 'register');
     }
 </script>
 </body>
